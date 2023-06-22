@@ -75,12 +75,13 @@ return fetch("http://localhost:8000/cart")
 
 
 
- function pushToCart(data,cart,setCart,username,isLogged,setMessage){
+ function pushToCart(data,cart,setCart,username,isLogged,setMessage,navigate){
   console.log(isLogged)
   console.log(username)
  if (username===null){
   console.log("pls log in")
   setMessage("Please Log In!")
+  navigate("/login")
   
   
 
@@ -259,7 +260,7 @@ const[userReview,setUserReview]=useState({
             } />
              
              <Route path="/shop" element={
-                <Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,cart,setNewCart,username,isLogged,setMessage)}
+                <Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,cart,setNewCart,username,isLogged,setMessage,navigate)}
                 addItemToPage={(product)=> itemClicked(product,navigate,setProduct)}
                 //newMessage={message}
                 newToken={token}
