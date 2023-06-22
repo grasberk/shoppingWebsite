@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Home from "./Home";
 import { useParams } from "react-router-dom";
 import ReviewForm from "./Review";
-function addReview(data,addedReviews,setUpdated,check){
+function addReview(data,addedReviews,setUpdated,check,product,productDetails){
     //data represents the review that was submitted
     if (data!=null){
       if (data!=null){
@@ -18,8 +18,8 @@ function addReview(data,addedReviews,setUpdated,check){
           body: JSON.stringify(
       {
         
-        _id: data._id,
-        item_id:data.item_id,
+        
+        item_id:productDetails.id,
         name: data.name,
         message:data.message
       }
@@ -73,7 +73,7 @@ function getReviews(userReview,setUserReview,id){
     
 function ItemPage(props){
     
-    console.log(props.productDetails)
+    //console.log(props.productDetails)
      const params=useParams();
     const[userReview,setUserReview]=useState({
         reviews:null,
@@ -158,7 +158,7 @@ function ItemPage(props){
             </Card>)}
            {/* <p>reviews:{JSON.stringify(userReview.reviews)}</p>  */}
         
-           <ReviewForm sendReview={(reviewData)=>addReview(reviewData,userReview.reviews,setUserReview,userReview.recieved)}></ReviewForm>
+           <ReviewForm sendReview={(reviewData)=>addReview(reviewData,userReview.reviews,setUserReview,userReview.recieved,product,props.productDetails)}></ReviewForm>
         </div>
         
         
