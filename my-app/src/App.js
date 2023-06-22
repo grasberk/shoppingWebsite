@@ -12,8 +12,9 @@ import ItemPage from './ItemPage';
 import { useNavigate } from 'react-router-dom';
 import Checkout from './Checkout';
 
-function itemClicked(product,navigate){
-  
+function itemClicked(product,navigate,setProduct){
+  setProduct(product)
+  console.log(product)
   navigate("/itempage/"+product.id)
 
   
@@ -204,6 +205,7 @@ function App() {
   const [checkAdmin,setCheckAdmin]=useState(false)
   const [username,setUsername]=useState(null)
   const [message,setMessage]=useState(null)
+  const [product,setProduct]=useState(null)
 
 const [token, setToken]=useState(null);
 
@@ -258,7 +260,7 @@ const[userReview,setUserReview]=useState({
              
              <Route path="/shop" element={
                 <Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,cart,setNewCart,username,isLogged,setMessage)}
-                addItemToPage={(product)=> itemClicked(product,navigate)}
+                addItemToPage={(product)=> itemClicked(product,navigate,setProduct)}
                 //newMessage={message}
                 newToken={token}
                 userLogged={username}
@@ -294,7 +296,7 @@ const[userReview,setUserReview]=useState({
            } /> */}
            <Route path="/itempage/:itemid" element={
                
-               <ItemPage     />
+               <ItemPage    productDetails={product} />
            } />
             <Route path="/checkout" element={
 

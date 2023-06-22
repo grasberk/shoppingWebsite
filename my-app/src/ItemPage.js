@@ -73,7 +73,7 @@ function getReviews(userReview,setUserReview,id){
     
 function ItemPage(props){
     
-    
+    console.log(props.productDetails)
      const params=useParams();
     const[userReview,setUserReview]=useState({
         reviews:null,
@@ -93,7 +93,7 @@ function ItemPage(props){
         (result)=>{
             
             setProduct({
-                product:result,
+                product:props.productDetails,
                 
                 
             })
