@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  
+
 }
 
 .App-logo {
@@ -27,6 +27,9 @@
 
 .App-link {
   color: #61dafb;
+}
+.username{
+  background-color: wheat;
 }
 
 

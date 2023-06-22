@@ -226,11 +226,14 @@ const[userReview,setUserReview]=useState({
   return (
     
     <div class="p-3 mb-2 bg-body-tertiary">
+      
       <div>
         
         {console.log(message)}
         {showMessage(username,message)}
+        
       </div>
+      
      
        <div class="topnav">
         
@@ -242,6 +245,7 @@ const[userReview,setUserReview]=useState({
           
           <Nav.Item> <Nav.Link  as={Link} to="/home">  Home  </Nav.Link></Nav.Item>
           <Nav.Item> {!username && (<Nav.Link  as={Link} to="/login">  SignUp/Login </Nav.Link>)}</Nav.Item>
+          <Nav.Item id="username">{username}</Nav.Item>
           
         </Nav>
         <h1 id="shoptitle"> GameMart </h1>
