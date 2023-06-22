@@ -12,6 +12,34 @@ import ItemPage from './ItemPage';
 import { useNavigate } from 'react-router-dom';
 import Checkout from './Checkout';
 
+function addToCart (data){
+  console.log(data)
+  if (data!=null){
+    console.log(data.product.name)
+    fetch("http://localhost:8000/addToCart", {
+          method: "POST",
+          headers:{
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(
+      {
+        //user_id: req.body.user_id,
+        id:data.product.id,
+        cart_id:1,
+        name: data.product.name,
+        price:data.product.price,
+        img: data.product.img,
+        desc:data.product.desc,
+        quantity:data.product.quantity,
+        type:data.product.type,
+        inventory:data.product.inventory
+      }
+    )
+      })
+  }
+  
+}
+
 function itemClicked(product,navigate,setProduct){
   setProduct(product)
   //console.log(product)
@@ -308,25 +336,15 @@ const[userReview,setUserReview]=useState({
                 userLogged={username}
 
                 />
-                
-                
-               
-                
+            
             } />
-             
-
-                
-         
             
             <Route path="/cart" element={username ? <Cart /> : null} />
-            {/* <Route path="/cart" element={
-               
-               <Cart     />
-              
-           } /> */}
+
            <Route path="/itempage/:itemid" element={
                
                <ItemPage    
+               addToCart={(productData)=>addToCart(productData)}
                productDetails={product}
                userEmail={username}
                

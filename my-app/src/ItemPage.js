@@ -92,8 +92,63 @@ function getReviews(userReview,setUserReview,id){
 
     
 function ItemPage(props){
+  function addQ(product,updateQuantity,increment,){
+        
+    if (product.inventory!==0&&product.quantity<product.inventory ){
+        
+        product.quantity++
+    // setProduct(products)
+    updateQuantity({
+        isUpdated:!increment
+    })
+    }
+
+
+
+else{
+    
+    updateQuantity({
+        isAvailable:false
+    })
+
+}
+
+
+}
+function removeQ(product,updateQuantity,increment){
+  console.log(product)
+    if (product.inventory!==0&&product.quantity<product.inventory){
+        
+        if(product.quantity>=1){
+            product.quantity--
+           // setProduct(products)
+           updateQuantity({
+               isUpdated:!increment
+           })
+           
+
+       }
+    }
+
+
+
+else{
+    
+    updateQuantity({
+        isAvailable:false
+    })
+}
+
+
+
+}
     
     //console.log(props.productDetails)
+    const[Quantity, setQuantity]=useState({
+      items:0,
+      isUpdated:false,
+      isAvailable:true
+  })
      const params=useParams();
      const [message,setMessage]=useState(null)
     const[userReview,setUserReview]=useState({
@@ -162,7 +217,10 @@ function ItemPage(props){
                 Description: {product.product.desc} 
              
             </Card.Text>
-            
+            <Button onClick={()=>removeQ(product.product,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >-</Button>{product.product.quantity}
+            <Button onClick={()=>addQ(product.product,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >+</Button>
+                
+            <Button onClick={()=>props.addToCart(product)}>Add To Cart</Button>
             
             
             
