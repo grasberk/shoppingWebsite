@@ -44,7 +44,7 @@ function createItem(data,newToken){
     "price":data.price,
     "img":data.img,
     "desc":data.desc,
-    "qunatity":0,
+    "inventory":data.inventory,
     "type":data.type
     
   }

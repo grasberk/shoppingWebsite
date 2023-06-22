@@ -320,7 +320,7 @@ app.post("/additem", authenticateToken,  async (req,res)=>{
     price:req.body.price,
     img:req.body.img,
     desc:req.body.desc,
-    quantity:req.body.quantity,
+    inventory:req.body.inventory,
     type:req.body.type
     
     
