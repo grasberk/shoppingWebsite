@@ -82,7 +82,32 @@ return fetch("http://localhost:8000/cart")
   console.log("pls log in")
   setMessage("Please Log In!")
   navigate("/login")
+  if (data!=null&& data.quantity!==0){
+     
+    fetch("http://localhost:8000/addToCart", {
+          method: "POST",
+          headers:{
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(
+      {
+        //user_id: req.body.user_id,
+        id:data.id,
+        cart_id:1,
+        name: data.name,
+        price:data.price,
+        img: data.img,
+        desc:data.desc,
+        quantity:data.quantity,
+        type:data.type,
+        inventory:data.inventory
+      }
+    )
+      })
+       
   
+  
+}
   
 
  }
