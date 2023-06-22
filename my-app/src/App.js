@@ -241,7 +241,7 @@ const[userReview,setUserReview]=useState({
 
           
           <Nav.Item> <Nav.Link  as={Link} to="/home">  Home  </Nav.Link></Nav.Item>
-          <Nav.Item> <Nav.Link  as={Link} to="/login">  SignUp/Login </Nav.Link></Nav.Item>
+          <Nav.Item> {!username && (<Nav.Link  as={Link} to="/login">  SignUp/Login </Nav.Link>)}</Nav.Item>
           
         </Nav>
         <h1 id="shoptitle"> GameMart </h1>
