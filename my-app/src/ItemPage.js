@@ -135,7 +135,7 @@ function ItemPage(props){
           <Card.Body>
             <Card.Title>{product.product.name}</Card.Title>
             <Card.Text>
-                 
+                Type:{product.product.type}<br></br>
                 Price:{product.product.price}<br></br>
                 Description: {product.product.desc} 
              
