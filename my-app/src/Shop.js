@@ -262,7 +262,7 @@ function Shop(props){
           <Card.Body>
             <Card.Title>{product.name}</Card.Title>
             <Card.Text>
-                 
+                Type: {product.type}<br></br>
                 Price:${product.price}<br></br>
                 {/* Description: {product.desc} */}
              
