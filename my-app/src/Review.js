@@ -12,7 +12,6 @@ function ReviewForm(props) {
   const[review,setReview]=useState({
     
     _id: null,
-    name: null,
     message:null
   })
 
@@ -28,14 +27,14 @@ function ReviewForm(props) {
                 
               })}  ></Form.Control>
             </Form.Group> */}
-            <Form.Group>
+            {/* <Form.Group>
               <Form.Label>Name</Form.Label>
               <Form.Control type="text" name="name" placeholder="Enter name" onChange={(e)=>setReview({
                 ...review,
                 name:e.target.value
                 
               })}  ></Form.Control>
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group>
               <Form.Label>Review</Form.Label>
               <Form.Control type="text" name="review" placeholder="Enter your Review" onChange={(e)=>setReview({

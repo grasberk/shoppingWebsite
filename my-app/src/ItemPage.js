@@ -6,42 +6,62 @@ import { useState } from 'react';
 import Home from "./Home";
 import { useParams } from "react-router-dom";
 import ReviewForm from "./Review";
-function addReview(data,addedReviews,setUpdated,check,product,productDetails){
-    //data represents the review that was submitted
-    if (data!=null){
-      if (data!=null){
-        fetch("http://localhost:8000/addReview", {
-          method: "POST",
-          headers:{
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(
-      {
-        
-        
-        item_id:productDetails.id,
-        name: data.name,
-        message:data.message
-      }
+function showMessage(message,userEmail){
+  console.log(message)
+  if (!userEmail){
+    return (
+      <div><h1>{message}</h1></div>
     )
-      })
-        
-      }
-        //userreview.reviews(list of reviews)
-        addedReviews.push(data)
-        
-        //setstate for reviews 
-        setUpdated({
-            
-            reviews: addedReviews,
-            //recieved
-            
-            
-            recieved:!check
+
+  }
+  
+}
+function addReview(data,addedReviews,setUpdated,check,productDetails,userEmail,setMessage){
+    //data represents the review that was submitted
+    console.log(userEmail)
+    if (!userEmail){
+      console.log("no username")
+      setMessage("Please Log In")
+      
+
+    }
+    else{
+      if (data!=null){
+        if (data!=null){
+          fetch("http://localhost:8000/addReview", {
+            method: "POST",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+        {
+          
+          
+          item_id:productDetails.id,
+          name: userEmail,
+          message:data.message
+        }
+      )
         })
-        
-        
-      }
+          
+        }
+          //userreview.reviews(list of reviews)
+          addedReviews.push(data)
+          
+          //setstate for reviews 
+          setUpdated({
+              
+              reviews: addedReviews,
+              //recieved
+              
+              
+              recieved:!check
+          })
+          
+          
+        }
+    }
+  
 
     
   }
@@ -75,6 +95,7 @@ function ItemPage(props){
     
     //console.log(props.productDetails)
      const params=useParams();
+     const [message,setMessage]=useState(null)
     const[userReview,setUserReview]=useState({
         reviews:null,
         recieved:false,
@@ -125,7 +146,8 @@ function ItemPage(props){
         
        
         <div>
-             
+          
+             {showMessage(message,props.userEmail)}
             <Card key={product.product.id}  border={"dark"} className="block"  style={{ width: '18rem' }}>
             
             <Card.Img src={product.product.img} className="itemImg"  />
@@ -151,6 +173,7 @@ function ItemPage(props){
           <h1>User Reviews</h1>
           {userReview.reviews.map(post=>
             <Card>
+              {console.log(post.name)}
                 <h1>Name: {post.name}</h1>
 
                 <h2>Post: {post.message}</h2>
@@ -158,7 +181,7 @@ function ItemPage(props){
             </Card>)}
            {/* <p>reviews:{JSON.stringify(userReview.reviews)}</p>  */}
         
-           <ReviewForm sendReview={(reviewData)=>addReview(reviewData,userReview.reviews,setUserReview,userReview.recieved,product,props.productDetails)}></ReviewForm>
+           <ReviewForm sendReview={(reviewData)=>addReview(reviewData,userReview.reviews,setUserReview,userReview.recieved,props.productDetails,props.userEmail,setMessage)}></ReviewForm>
         </div>
         
         

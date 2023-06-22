@@ -219,7 +219,7 @@ function Shop(props){
     }
     else{
         
-       console.log(Item.result)
+       //console.log(Item.result)
 
     }
     

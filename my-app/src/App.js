@@ -14,7 +14,7 @@ import Checkout from './Checkout';
 
 function itemClicked(product,navigate,setProduct){
   setProduct(product)
-  console.log(product)
+  //console.log(product)
   navigate("/itempage/"+product.id)
 
   
@@ -250,7 +250,7 @@ const[userReview,setUserReview]=useState({
 })
   return (
     
-    <div class="p-3 mb-2 bg-body-tertiary">
+    <div className="p-3 mb-2 bg-body-tertiary">
       
       <div>
         
@@ -260,12 +260,12 @@ const[userReview,setUserReview]=useState({
       </div>
       
      
-       <div class="topnav">
+       <div className="topnav">
         
         <Nav>
           <Nav.Item><Nav.Link as={Link} to="/shop"> Shop   </Nav.Link></Nav.Item>
 
-          <Nav.Item>{username && (<Nav.Link class="" as={Link} to="/cart">Cart</Nav.Link> )}</Nav.Item>
+          <Nav.Item>{username && (<Nav.Link as={Link} to="/cart">Cart</Nav.Link> )}</Nav.Item>
 
           
           <Nav.Item> <Nav.Link  as={Link} to="/home">  Home  </Nav.Link></Nav.Item>
@@ -326,7 +326,11 @@ const[userReview,setUserReview]=useState({
            } /> */}
            <Route path="/itempage/:itemid" element={
                
-               <ItemPage    productDetails={product} />
+               <ItemPage    
+               productDetails={product}
+               userEmail={username}
+               
+               />
            } />
             <Route path="/checkout" element={
 
