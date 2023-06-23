@@ -330,7 +330,7 @@ app.post("/additem", authenticateToken,  async (req,res)=>{
 res.json(newItem);
   
 })
-
+//delete item from shop working 
 app.delete("/shop/delete/:id", authenticateToken, async(req,res)=>{
   console.log("remove from cart")
   console.log(req.params.id)

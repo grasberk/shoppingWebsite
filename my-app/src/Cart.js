@@ -96,9 +96,65 @@ function remove(cart,product,productId,setCart,setUpdateCart,updateCart){
 }
 
 function Cart(props){
+    function addQ(product,updateQuantity,increment,){
+        
+        if (product.inventory!==0&&product.quantity<product.inventory ){
+            
+            product.quantity++
+        // setProduct(products)
+        updateQuantity({
+            isUpdated:!increment
+        })
+        }
+    
+    
+    
+    else{
+        
+        updateQuantity({
+            isAvailable:false
+        })
+    
+    }
+    
+    
+    }
+    function removeQ(product,updateQuantity,increment){
+      console.log(product)
+        if (product.inventory!==0&&product.quantity<product.inventory){
+            
+            if(product.quantity>=1){
+                product.quantity--
+               // setProduct(products)
+               updateQuantity({
+                   isUpdated:!increment
+               })
+               
+    
+           }
+        }
+    
+    
+    
+    else{
+        
+        updateQuantity({
+            isAvailable:false
+        })
+    }
+    
+    
+    
+    }
+        
     // const [checkout,setCheckout]=useState({
     //     purchased:null
     // })
+    const[Quantity, setQuantity]=useState({
+        items:0,
+        isUpdated:false,
+        isAvailable:true
+    })
     
     const[updateCart,setUpdateCart]=useState({
         updateCart:false
@@ -113,6 +169,7 @@ function Cart(props){
     const[total,setTotal]=useState({
         total:0
     })
+    
     
       
      fetch("http://localhost:8000/cart")
@@ -149,20 +206,15 @@ function Cart(props){
 
                   <Card.Title>{item.name}</Card.Title>
                   <Card.Text>
-                      Quantity: {item.quantity} <br></br>
+                      {/* Quantity: {item.quantity} <br></br> */}
                       Price:{item.price}<br></br>
                       Description: {item.desc}
                    
                   </Card.Text>
-                  
-                  
-      
-      
-                  
-                  
-                  
-                  
+                  <Button onClick={()=>removeQ(item,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >-</Button>{item.quantity}
+                <Button onClick={()=>addQ(item,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >+</Button>
                 </Card.Body>
+                
                 <Button variant="danger" onClick={()=>remove(cart.result,item,item.id,setCart,setUpdateCart,updateCart)} >Remove</Button>
     
                 </Card>)}
