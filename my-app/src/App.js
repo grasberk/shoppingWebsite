@@ -101,7 +101,9 @@ return fetch("http://localhost:8000/cart")
           
           
 
-
+function navigateLogin(navigate){
+  navigate('/login')
+}
 
  function pushToCart(data,cart,setCart,username,isLogged,setMessage,navigate){
   console.log(isLogged)
@@ -347,6 +349,7 @@ const[userReview,setUserReview]=useState({
                addToCart={(productData)=>addToCart(productData)}
                productDetails={product}
                userEmail={username}
+               goToLogin={()=>navigateLogin(navigate)}
                
                />
            } />

@@ -16,17 +16,46 @@ function showMessage(message,userEmail){
   }
   
 }
-function addReview(data,addedReviews,setUpdated,check,productDetails,userEmail,setMessage){
+
+
+function getReviews(userReview,setUserReview,id){
+    //console.log(userReview)
+    console.log("item id")
+    console.log(id)
+    fetch(`http://localhost:8000/reviews/${id}`)
+       .then(res=>res.json())
+       
+       .then(
+        (result)=>{
+            //console.log(result)
+            setUserReview({
+                reviews:result,
+                
+            })
+
+            
+        }
+        
+       )
+      
+      
+       
+}
+
+    
+function ItemPage(props){
+  function addReview(data,addedReviews,setUpdated,check,productDetails,userEmail,setMessage){
     //data represents the review that was submitted
-    console.log(userEmail)
     if (!userEmail){
       console.log("no username")
       setMessage("Please Log In")
+      props.goToLogin()
       
 
     }
     else{
       if (data!=null){
+        
         if (data!=null){
           fetch("http://localhost:8000/addReview", {
             method: "POST",
@@ -65,33 +94,7 @@ function addReview(data,addedReviews,setUpdated,check,productDetails,userEmail,s
 
     
   }
-
-function getReviews(userReview,setUserReview,id){
-    //console.log(userReview)
-    console.log("item id")
-    console.log(id)
-    fetch(`http://localhost:8000/reviews/${id}`)
-       .then(res=>res.json())
-       
-       .then(
-        (result)=>{
-            //console.log(result)
-            setUserReview({
-                reviews:result,
-                
-            })
-
-            
-        }
-        
-       )
-      
-      
-       
-}
-
-    
-function ItemPage(props){
+  
   function addQ(product,updateQuantity,increment,){
         
     if (product.inventory!==0&&product.quantity<product.inventory ){
