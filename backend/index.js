@@ -313,9 +313,11 @@ app.post('/login', async (req,res)=>{
 
 app.post("/additem", authenticateToken,  async (req,res)=>{
   console.log("add item running authenticating")
+  const maxIdItem = await Item.findOne().sort('-id'); 
+    const newId = maxIdItem ? maxIdItem.id + 1 : 0; 
   const newItem = await Item.create({
 
-    id:req.body.id,
+    id:newId,
     name:req.body.name,
     price:req.body.price,
     img:req.body.img,

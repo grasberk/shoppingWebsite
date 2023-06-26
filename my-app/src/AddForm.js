@@ -32,14 +32,7 @@ function AddForm(props) {
       <Card.Body>
           
           <Form>
-          <Form.Group>
-              <Form.Label>ID</Form.Label>
-              <Form.Control type="text" name="id" placeholder="Enter ID" onChange={(e)=>setFormData({
-                ...formdata,
-                id:e.target.value
-                
-              })}  ></Form.Control>
-            </Form.Group>
+          
             <Form.Group>
               <Form.Label>Name</Form.Label>
               <Form.Control type="text" name="name" placeholder="Enter name" onChange={(e)=>setFormData({

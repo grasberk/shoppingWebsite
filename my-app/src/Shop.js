@@ -36,10 +36,10 @@ function removemShop(data,setItem,newToken,userAdmin){
 function createItem(data,newToken){
    
     
-  //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2ODYxNTc3NDl9.rOeUsnfjNfgWZHtQCviBcIgzMOCgIT4S7Ump48Mpufs"
+  
   const newItem={
 
-    "id":data.id,
+    
     "name":data.name,
     "price":data.price,
     "img":data.img,
