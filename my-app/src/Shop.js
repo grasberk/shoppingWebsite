@@ -237,12 +237,12 @@ function Shop(props){
             
             <Form id="filter"> 
             <Form.Group>
-              <Form.Label>Filter by (fighting,sports)</Form.Label>
-              {/* <Form.Control type="text" name="filter" placeholder="type" onChange={(e)=>setFilter({
+              <Form.Label>Filter by Name</Form.Label>
+              <Form.Control type="text" name="filter" placeholder="type full name" onChange={(e)=>setFilter({
                 
                 result:e.target.value
                 
-              })}  ></Form.Control> */}
+              })}  ></Form.Control>
                 <select name="filter" onChange={(e) => setFilter({ result: e.target.value })}>
                   <option value="">Select an option</option>
                   <option value="fighting">Fighting</option>

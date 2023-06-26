@@ -178,6 +178,13 @@ else if(filter=== 'priceHL'){
   res.json(someItems)
 
 }
+
+else{
+
+  someItems= await Item.find({name:filter})
+    res.json(someItems)
+
+}
   
   
  
