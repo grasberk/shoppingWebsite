@@ -223,7 +223,7 @@ function Shop(props){
 
     }
     
-
+    
     const [originalData,setOriginalData]=useState(Item)
    if(Item.status==="completed"){
     return(
@@ -232,21 +232,32 @@ function Shop(props){
             
            
               
-               {props.userLogged}
+               {/* {props.userLogged} */}
             
             
             <Form id="filter"> 
             <Form.Group>
               <Form.Label>Filter by (fighting,sports)</Form.Label>
-              <Form.Control type="text" name="filter" placeholder="type" onChange={(e)=>setFilter({
+              {/* <Form.Control type="text" name="filter" placeholder="type" onChange={(e)=>setFilter({
                 
                 result:e.target.value
                 
-              })}  ></Form.Control>
+              })}  ></Form.Control> */}
+                <select name="filter" onChange={(e) => setFilter({ result: e.target.value })}>
+                  <option value="">Select an option</option>
+                  <option value="fighting">Fighting</option>
+                  <option value="sports">Sports</option>
+                  <option value="priceLH">Price: Low to High</option>
+                  <option value="priceHL">Price: High to Low</option>
+                </select>
+                      
               </Form.Group>
-              <Button onClick={()=>findItem(filter,setItem,setFilter)}> Submit</Button>
              
+              
+              <Button onClick={()=>findItem(filter,setItem,setFilter)}> Submit</Button>
+              
               </Form>
+              
             <div className="products">
                 
             {Item.result.map(product=> 

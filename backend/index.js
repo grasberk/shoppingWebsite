@@ -147,13 +147,39 @@ app.get('/items', async(req,res)=>{
     res.json(allItems)
    
 })
-   
-   
-app.get('/items/:type', async(req,res)=>{
+
+//filter by price
+
+app.get('/items/:filter', async(req,res)=>{
+    const filter=req.params.filter
     
-  
-  const someItems= await Item.find({type:req.params.type})
+    console.log(filter)
+  if(filter=== 'fighting'){
+
+     someItems= await Item.find({type:filter})
+     res.json(someItems)
+
+  }
+  else if(filter=== 'sports'){
+
+    someItems= await Item.find({type:filter})
+    res.json(someItems)
+
+ }
+ else if(filter=== 'priceLH'){
+
+  someItems= await Item.find().sort({ price : 1 })
   res.json(someItems)
+
+}
+else if(filter=== 'priceHL'){
+
+  someItems= await Item.find().sort({ price : -1 })
+  res.json(someItems)
+
+}
+  
+  
  
 })
 //find item by id
