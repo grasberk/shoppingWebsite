@@ -81,7 +81,7 @@ function LoginForm(props){
           })
         
     }
-      function loginSubmit (userEmail,userPassword,setTokenData,setUsername){
+      function loginSubmit (userEmail,userPassword,setTokenData,setUsername,userReview,productDetails){
         console.log("start login")
         return fetch("http://localhost:8000/login", {
             method: "POST",
@@ -103,6 +103,24 @@ function LoginForm(props){
             sendisAdmin(data.isAdmin)
             
             const token = data.token; // Access the token property in the response
+            if (userEmail!=null){
+                fetch("http://localhost:8000/addReview", {
+                  method: "POST",
+                  headers:{
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(
+              {
+                
+                
+                item_id:productDetails.id,
+                name: userEmail,
+                message:userReview
+              }
+            )
+              })
+                
+              }
              
             return token;
           }).then((token)=>{
@@ -154,12 +172,10 @@ return(
             <span> </span>
             
             <Button
-            variant="primary" onClick={()=>loginSubmit(email,password,setTokenData,setUseremail)}>
+            variant="primary" onClick={()=>loginSubmit(email,password,setTokenData,setUseremail,props.userReview,props.productDetails)}>
                 Login
             </Button>
             
-            
-            {/* tried props.login submit but didnt work */}
             
 		</Form>
 </div>

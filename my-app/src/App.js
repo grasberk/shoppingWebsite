@@ -101,7 +101,9 @@ return fetch("http://localhost:8000/cart")
           
           
 
-function navigateLogin(navigate){
+function navigateLogin(navigate,data,setReview){
+  console.log(data)
+  setReview(data)
   navigate('/login')
 }
 
@@ -258,6 +260,7 @@ const handleLogin = (setIsLoggedIn,username) => {
 
 
 function App() {
+  const [review,setReview]=useState(null)
   const [checkAdmin,setCheckAdmin]=useState(false)
   const [username,setUsername]=useState(null)
   const [message,setMessage]=useState(null)
@@ -336,6 +339,8 @@ const[userReview,setUserReview]=useState({
                 sendUsername={(username)=>showUsername(username,setUsername)}
                 sendAdmin={(isAdmin)=>showAdmin(isAdmin,setCheckAdmin)}
                 userLogged={username}
+                userReview={review}
+                productDetails={product}
 
                 />
             
@@ -349,7 +354,8 @@ const[userReview,setUserReview]=useState({
                addToCart={(productData)=>addToCart(productData)}
                productDetails={product}
                userEmail={username}
-               goToLogin={()=>navigateLogin(navigate)}
+               goToLogin={(data)=>navigateLogin(navigate,data,setReview)}
+               
                
                />
            } />

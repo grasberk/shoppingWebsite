@@ -49,7 +49,7 @@ function ItemPage(props){
     if (!userEmail){
       console.log("no username")
       setMessage("Please Log In")
-      props.goToLogin()
+      props.goToLogin(data.message)
       
 
     }
