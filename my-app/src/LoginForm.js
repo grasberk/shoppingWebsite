@@ -113,7 +113,7 @@ function LoginForm(props){
               {
                 
                 
-                item_id:productDetails.id,
+                //item_id:productDetails.id,
                 name: userEmail,
                 message:userReview
               }

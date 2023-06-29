@@ -11,6 +11,7 @@ import './App.css'
 import ItemPage from './ItemPage';
 import { useNavigate } from 'react-router-dom';
 import Checkout from './Checkout';
+import { Button } from 'react-bootstrap';
 
 function addToCart (data){
   console.log(data)
@@ -247,13 +248,13 @@ function showAdmin(isAdmin,setCheckAdmin){
 }
 
 
-const handleLogin = (setIsLoggedIn,username) => {
+const handleLogin = (setIsLoggedIn,username,isLoggedIn,navigate) => {
   if(username){
     setIsLoggedIn(true);
   }
-  else{
-    setIsLoggedIn(false);
-  }
+  
+  console.log(isLoggedIn)
+  navigate('/login')
   
 };
 
@@ -265,7 +266,7 @@ function App() {
   const [username,setUsername]=useState(null)
   const [message,setMessage]=useState(null)
   const [product,setProduct]=useState(null)
-
+  const [isLoggedIn, setIsLoggedIn]=useState(false)
 const [token, setToken]=useState(null);
 
   const navigate=useNavigate();
@@ -304,6 +305,8 @@ const[userReview,setUserReview]=useState({
           <Nav.Item> <Nav.Link  as={Link} to="/home">  Home  </Nav.Link></Nav.Item>
           <Nav.Item> {!username && (<Nav.Link  as={Link} to="/login">  SignUp/Login </Nav.Link>)}</Nav.Item>
           <Nav.Item id="username">{username}</Nav.Item>
+
+          <Button onClick={()=>{handleLogin(setIsLoggedIn,username,isLoggedIn,navigate)}}>  Logout </Button>
           
         </Nav>
         <h1 id="shoptitle"> GameMart </h1>
