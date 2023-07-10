@@ -225,7 +225,7 @@ function Shop(props){
   
     
     
-    const [originalData,setOriginalData]=useState(Item)
+    // const [originalData,setOriginalData]=useState(Item)
    if(Item.status==="completed"){
     return(
         

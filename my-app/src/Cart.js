@@ -130,9 +130,7 @@ function Cart(props){
     
     }
         
-    // const [checkout,setCheckout]=useState({
-    //     purchased:null
-    // })
+ 
     const[Quantity, setQuantity]=useState({
         items:0,
         isUpdated:false,
@@ -169,7 +167,7 @@ function Cart(props){
     //     )
         
      
-    if (Cart.status!==true){
+    if (cart.status!==true){
       
         fetch("http://localhost:8000/cart")
         .then(res=>res.json())
@@ -178,7 +176,7 @@ function Cart(props){
              
                  setCart({
                      result:result,
-                     status:true
+                     status:!cart.status
                  })
              
              
