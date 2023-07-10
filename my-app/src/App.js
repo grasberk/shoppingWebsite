@@ -108,7 +108,7 @@ function navigateLogin(navigate,data,setReview){
 }
 
  function pushToCart(data,cart,setCart,username,isLogged,setMessage,navigate,isLoggedIn){
-
+  console.log(data)
  if (username===null ){
   
   setMessage("Please Log In!")

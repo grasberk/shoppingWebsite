@@ -235,7 +235,7 @@ else{
             <Button onClick={()=>removeQ(product.product,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >-</Button>{product.product.quantity}
             <Button onClick={()=>addQ(product.product,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >+</Button>
                 
-            <Button onClick={()=>props.addToCart(product)}>Add To Cart</Button>
+            <Button onClick={()=>props.addToCart(product.product)}>Add To Cart</Button>
             
             
             
