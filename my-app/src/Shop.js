@@ -108,7 +108,10 @@ function findItem(filter,setItem,setFilter){
 
 
 function Shop(props){
-    
+  
+   
+  
+  
  const[testmessage,setTestMessage]=useState({
     result:props.newMessage
  })
@@ -271,6 +274,14 @@ function Shop(props){
     
     // const [originalData,setOriginalData]=useState(Item)
    if(Item.status==="completed"){
+    const sortedItems = Item.result.sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
+    
     return(
         
         <div>
@@ -309,7 +320,7 @@ function Shop(props){
               
             <div className="products">
                 
-            {Item.result.map(product=> 
+            {sortedItems.map((product)=> 
             
             <Card key={product.id} greeting={"hi"} border={"dark"} className="block"  style={{ width: '20rem' }}>
             <Button className="itemButton" onClick={()=>props.addItemToPage(product)} >
