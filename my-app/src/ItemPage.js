@@ -6,8 +6,17 @@ import { useState } from 'react';
 import Home from "./Home";
 import { useParams } from "react-router-dom";
 import ReviewForm from "./Review";
+
+
+function showReviews(userReview){
+
+  if (userReview.recieved!=true){
+    
+  }
+
+}
 function showMessage(message,userEmail){
-  console.log(message)
+  console.log(userEmail)
   if (!userEmail){
     return (
       <div><h1>{message}</h1></div>
@@ -32,9 +41,11 @@ function getReviews(userReview,setUserReview,id){
                 reviews:result,
                 
             })
+           
 
             
         }
+        
         
        )
       
@@ -44,6 +55,7 @@ function getReviews(userReview,setUserReview,id){
 
     
 function ItemPage(props){
+  const [username,setUsername]=useState(null);
   function addReview(data,addedReviews,setUpdated,check,productDetails,userEmail,setMessage){
     //data represents the review that was submitted
     if (!userEmail){
@@ -176,7 +188,7 @@ else{
                 
                 
             })
-            getReviews(userReview,setUserReview,params.itemid)
+            getReviews(userReview,setUserReview,params.itemid,setUsername,props.userEmail)
         
         }
         
@@ -231,7 +243,9 @@ else{
           
           
           </Card>
+         
           <h1>User Reviews</h1>
+          {showReviews(userReview)}
           {userReview.reviews.map(post=>
             <Card>
               {console.log(post.name)}

@@ -125,6 +125,48 @@ function Shop(props){
     //checkout component inventory affects quantity 
     //make cart have updated fields for same item instead of new items added to cart db
 
+    function editInventory(product){
+      console.log(product.inventory)
+      fetch(`http://localhost:8000/shop/update/${product.id}`, {
+        method: "PUT",
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+    {
+     
+        id:product.id,
+        cart_id:1,
+        name: product.name,
+        price:product.price,
+        img: product.img,
+        desc:product.desc,
+        quantity:product.quantity,
+        inventory:product.inventory,
+        type:product.type
+      
+    }
+  )
+    })
+    }
+    function addInventory(product,setInventory,updateInventory){
+
+      product.inventory++
+      setInventory({
+        isUpdated:!updateInventory
+      })
+
+
+    }
+    function subtractInventory(product,setInventory,updateInventory){
+
+      product.inventory--
+      setInventory({
+        isUpdated:!updateInventory
+      })
+
+
+    }
 
     function addQ(product,updateQuantity,increment,){
         
@@ -176,7 +218,9 @@ function Shop(props){
         
         
     }
-    
+    const [inventory,setInventory]=useState({
+      isUpdated:false
+    })
     const [message,setMessage]=useState({
         available:true,
         inputfield:true,
@@ -289,6 +333,13 @@ function Shop(props){
                 
             <Button variant="success" onClick={()=>props.addToCart(product,props.userLogged)} >Submit</Button>
             {props.userAdmin===true ? <Button variant="danger" onClick={()=>removemShop(product,setItem,props.newToken,props.userAdmin)} >Remove</Button> : null }
+            <br></br>
+            {props.userAdmin===true ? <Button onClick={()=>subtractInventory(product,setInventory)}>-</Button> : null }
+            {props.userAdmin===true ? product.inventory : null }
+            {props.userAdmin===true ? <Button  onClick={()=>addInventory(product,setInventory,inventory.isUpdated)}>+</Button> : null }
+            {props.userAdmin===true ?  <Button variant="success" onClick={()=>editInventory(product)} >Submit</Button> : null }
+            
+          
             
             <p>Inventory: {product.inventory}</p>
             
