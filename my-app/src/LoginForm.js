@@ -96,14 +96,14 @@ function LoginForm(props){
         })
         .then(data => {
             console.log("checking for user email and review")
-            console.log(productDetails.id)
+           
             console.log(userEmail)
             console.log(userReview)
             sendEmail(data.email)
             sendisAdmin(data.isAdmin)
             
             const token = data.token; // Access the token property in the response
-            if (userEmail!=null){
+            if (userEmail!=null && productDetails!=null){
                 fetch("http://localhost:8000/addReview", {
                   method: "POST",
                   headers:{
