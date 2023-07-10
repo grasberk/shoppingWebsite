@@ -4,35 +4,18 @@ import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import './myStyles.css'
 function showMessage(total){
-    return <div id="total" class="alert" role="alert">
+    return <div id="total" className="alert" role="alert">
     Total: ${total.total} 
     
   </div>
 }
 function checkout(cart,total,setTotal){
      console.log(cart.result)
-    // setCheckout({
-    //     purchased:cart
-    // })
-    let value=0
-    // cart.result.map(product=>{
-    //     console.log(product.price)
-    //     value+=(product.price*product.quantity)
-
-    // }
-        
-        
-    //     // console.log(product.price*product.quantity),
-        
-    //     //total=product.price*product.quantity
-        
     
-    //     )
-    // let value=0
+    let value=0
+ 
     cart.result.forEach(product => {
-        console.log(product.price)
-        console.log(product.quantity)
-        console.log(product.inventory)
+      
         value+=(product.price*product.quantity)
         
 
@@ -172,23 +155,39 @@ function Cart(props){
     
     
       
-     fetch("http://localhost:8000/cart")
+    //  fetch("http://localhost:8000/cart")
+    //     .then(res=>res.json())
+    //     .then(
+    //      (result)=>{
+             
+    //          setCart({
+    //              result:result,
+    //              status:!false
+    //          })
+             
+    //      }
+    //     )
+        
+     
+    if (Cart.status!==true){
+      
+        fetch("http://localhost:8000/cart")
         .then(res=>res.json())
         .then(
          (result)=>{
              
-             setCart({
-                 result:result,
-                 status:!false
-             })
+                 setCart({
+                     result:result,
+                     status:true
+                 })
+             
+             
              
          }
         )
-        
-     
-    
+     }
  
-    if(cart.result!=null){
+    if(cart.status===true){
         return(
             
         

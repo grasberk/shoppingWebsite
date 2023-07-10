@@ -222,11 +222,7 @@ function Shop(props){
         }
        )
     }
-    else{
-        
-       //console.log(Item.result)
-
-    }
+  
     
     
     const [originalData,setOriginalData]=useState(Item)
