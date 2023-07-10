@@ -233,7 +233,8 @@ function Shop(props){
     const[Quantity, setQuantity]=useState({
         items:0,
         isUpdated:false,
-        isAvailable:true
+        isAvailable:true,
+        dataSent:false
     })
 
     const[filter,setFilter]=useState({
@@ -250,7 +251,8 @@ function Shop(props){
     const[Item,setItem]=useState({
         result:null,
         status:"pending",
-        addstatus:"null"
+        addstatus:"null",
+        showQuantity:true
     });
     if (Item.status!=="completed" && filter.status===false){
       
@@ -274,6 +276,7 @@ function Shop(props){
     
     // const [originalData,setOriginalData]=useState(Item)
    if(Item.status==="completed"){
+    
     const sortedItems = Item.result.sort((a, b) => {
       const nameA = a.name.toLowerCase();
       const nameB = b.name.toLowerCase();
@@ -342,7 +345,18 @@ function Shop(props){
             <Button onClick={()=>removeQ(product,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >-</Button>{product.quantity}
             <Button onClick={()=>addQ(product,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >+</Button>
                 
-            <Button variant="success" onClick={()=>props.addToCart(product,props.userLogged)} >Submit</Button>
+            <Button variant="success" onClick={()=>{
+              props.addToCart(product,props.userLogged)
+              setItem({
+                showQuantity:!Item.showQuantity
+              })
+
+              
+              
+
+            }} >Submit</Button>
+           
+
             {props.userAdmin===true ? <Button variant="danger" onClick={()=>removemShop(product,setItem,props.newToken,props.userAdmin)} >Remove</Button> : null }
             <br></br>
             {props.userAdmin===true ? <Button onClick={()=>subtractInventory(product,setInventory)}>-</Button> : null }
