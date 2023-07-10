@@ -95,8 +95,10 @@ function LoginForm(props){
             return res.json()
         })
         .then(data => {
-            console.log("checking from backend res if email is admin")
-            console.log(data.isAdmin)
+            console.log("checking for user email and review")
+            console.log(productDetails.id)
+            console.log(userEmail)
+            console.log(userReview)
             sendEmail(data.email)
             sendisAdmin(data.isAdmin)
             
@@ -111,7 +113,7 @@ function LoginForm(props){
               {
                 
                 
-                //item_id:productDetails.id,
+                item_id:productDetails.id,
                 name: userEmail,
                 message:userReview
               }
