@@ -82,6 +82,32 @@ function remove(product,setUpdateCart,updateCart,setCart){
 }
 
 function Cart(props){
+    function editQuantity(product){
+        console.log(product.id)
+        console.log(product.quantity)
+        fetch(`http://localhost:8000/cart/update/${product.id}`, {
+            method: "PUT",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+        {
+         
+            id:product.id,
+            cart_id:1,
+            name: product.name,
+            price:product.price,
+            img: product.img,
+            desc:product.desc,
+            quantity:product.quantity,
+            inventory:product.inventory,
+            type:product.type
+          
+        }
+      )
+        })
+
+    }
     function addQ(product,updateQuantity,increment,){
         
         if (product.inventory!==0&&product.quantity<product.inventory ){
@@ -213,6 +239,7 @@ function Cart(props){
                   </Card.Text>
                   <Button onClick={()=>removeQ(item,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >-</Button>{item.quantity}
                 <Button onClick={()=>addQ(item,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >+</Button>
+                <Button variant="success" onClick={()=>editQuantity(item)} >Edit Quantity</Button>
                 </Card.Body>
                 
                 <Button variant="danger" onClick={()=>remove(item,setUpdateCart,updateCart,setCart)} >Remove</Button>
