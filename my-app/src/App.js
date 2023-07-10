@@ -108,14 +108,17 @@ function navigateLogin(navigate,data,setReview){
   navigate('/login')
 }
 
- function pushToCart(data,cart,setCart,username,isLogged,setMessage,navigate){
+ function pushToCart(data,cart,setCart,username,isLogged,setMessage,navigate,isLoggedIn){
+
   console.log(isLogged)
   console.log(username)
- if (username===null){
+  console.log("is logged in status: ")
+  console.log(isLoggedIn)
+ if (username===null ){
   console.log("pls log in")
   setMessage("Please Log In!")
   navigate("/login")
-  if (data!=null&& data.quantity!==0){
+  if (data!=null&& data.quantity!==0 ){
      
     fetch("http://localhost:8000/addToCart", {
           method: "POST",
@@ -153,7 +156,7 @@ function navigateLogin(navigate,data,setReview){
   }).then((result)=>{
     if(result===false){
     
-        if (data!=null&& data.quantity!==0){
+        if (data!=null&& data.quantity!==0 && isLoggedIn===true){
      
           fetch("http://localhost:8000/addToCart", {
                 method: "POST",
@@ -237,8 +240,9 @@ function showToken(token,setToken){
   console.log(token)
 }
 
-function showUsername(username,setUsername){
+function showUsername(username,setUsername,setIsLoggedIn){
   setUsername(username)
+  setIsLoggedIn(true)
   console.log("showing username in application.js")
   console.log(username)
 }
@@ -250,8 +254,9 @@ function showAdmin(isAdmin,setCheckAdmin){
 
 const handleLogin = (setIsLoggedIn,username,isLoggedIn,navigate,setUsername) => {
   if(username){
-    setIsLoggedIn(true);
+    
     setUsername(false)
+    setIsLoggedIn(false);
   }
   
   console.log(isLoggedIn)
@@ -267,7 +272,7 @@ function App() {
   const [username,setUsername]=useState(false)
   const [message,setMessage]=useState(null)
   const [product,setProduct]=useState(null)
-  const [isLoggedIn, setIsLoggedIn]=useState(true)
+  const [isLoggedIn, setIsLoggedIn]=useState(false)
 const [token, setToken]=useState(null);
 
   const navigate=useNavigate();
@@ -326,7 +331,7 @@ const[userReview,setUserReview]=useState({
             } />
              
              <Route path="/shop" element={
-                <Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,cart,setNewCart,username,isLogged,setMessage,navigate)}
+                <Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,cart,setNewCart,username,isLogged,setMessage,navigate,isLoggedIn)}
                 addItemToPage={(product)=> itemClicked(product,navigate,setProduct)}
                 //newMessage={message}
                 newToken={token}
@@ -340,7 +345,7 @@ const[userReview,setUserReview]=useState({
             <Route path="/login" element={
 
                 <LoginForm sendTokenData={(tokenData)=>showToken(tokenData,setToken)}
-                sendUsername={(username)=>showUsername(username,setUsername)}
+                sendUsername={(username)=>showUsername(username,setUsername,setIsLoggedIn)}
                 sendAdmin={(isAdmin)=>showAdmin(isAdmin,setCheckAdmin)}
                 userLogged={username}
                 userReview={review}
