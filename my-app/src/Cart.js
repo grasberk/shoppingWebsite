@@ -58,7 +58,7 @@ function checkout(cart,total,setTotal){
     
 }
 
-function remove(cart,product,productId,setCart,setUpdateCart,updateCart){
+function remove(product,setUpdateCart,updateCart){
     fetch(`http://localhost:8000/cart/delete/${product.id}`, {
         method:"DELETE",
       }).then(()=>{
@@ -214,7 +214,7 @@ function Cart(props){
                 <Button onClick={()=>addQ(item,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >+</Button>
                 </Card.Body>
                 
-                <Button variant="danger" onClick={()=>remove(cart.result,item,item.id,setCart,setUpdateCart,updateCart)} >Remove</Button>
+                <Button variant="danger" onClick={()=>remove(item,setUpdateCart,updateCart)} >Remove</Button>
     
                 </Card>)}
                 

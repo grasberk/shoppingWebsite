@@ -257,7 +257,10 @@ app.post("/addToCart", async (req,res)=>{
 res.json(newCart)
 })
 
+
+
 app.delete("/cart/delete/:id", async(req,res)=>{
+  
   await Cart.findOneAndDelete({id:req.params.id})
   
   res.json(await Cart.find())
@@ -394,7 +397,7 @@ res.json(newItem);
 })
 //delete item from shop working 
 app.delete("/shop/delete/:id", authenticateToken, async(req,res)=>{
-  console.log("remove from cart")
+  console.log("remove from shop")
   console.log(req.params.id)
   await Item.findOneAndDelete({id:req.params.id})
   
