@@ -248,9 +248,10 @@ function showAdmin(isAdmin,setCheckAdmin){
 }
 
 
-const handleLogin = (setIsLoggedIn,username,isLoggedIn,navigate) => {
+const handleLogin = (setIsLoggedIn,username,isLoggedIn,navigate,setUsername) => {
   if(username){
     setIsLoggedIn(true);
+    setUsername(false)
   }
   
   console.log(isLoggedIn)
@@ -263,10 +264,10 @@ const handleLogin = (setIsLoggedIn,username,isLoggedIn,navigate) => {
 function App() {
   const [review,setReview]=useState(null)
   const [checkAdmin,setCheckAdmin]=useState(false)
-  const [username,setUsername]=useState(null)
+  const [username,setUsername]=useState(false)
   const [message,setMessage]=useState(null)
   const [product,setProduct]=useState(null)
-  const [isLoggedIn, setIsLoggedIn]=useState(false)
+  const [isLoggedIn, setIsLoggedIn]=useState(true)
 const [token, setToken]=useState(null);
 
   const navigate=useNavigate();
@@ -306,7 +307,7 @@ const[userReview,setUserReview]=useState({
           <Nav.Item> {!username && (<Nav.Link  as={Link} to="/login">  SignUp/Login </Nav.Link>)}</Nav.Item>
           <Nav.Item id="username">{username}</Nav.Item>
 
-          <Button onClick={()=>{handleLogin(setIsLoggedIn,username,isLoggedIn,navigate)}}>  Logout </Button>
+          <Button onClick={()=>{handleLogin(setIsLoggedIn,username,isLoggedIn,navigate,setUsername)}}>  Logout </Button>
           
         </Nav>
         <h1 id="shoptitle"> GameMart </h1>
