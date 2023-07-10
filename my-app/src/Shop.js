@@ -9,9 +9,18 @@ import AddForm from "./AddForm";
 
 
 
+function showInputMessage(input){
+  if (input===false){
+      return <div className="alert" role="alert">
+      Please enter valid inputs! 
+      
+    </div>
+  }
+  
+}
 function showMessage(available){
     if (available===false){
-        return <div class="alert" role="alert">
+        return <div className="alert" role="alert">
         Product not available! 
         
       </div>
@@ -34,32 +43,37 @@ function removemShop(data,setItem,newToken,userAdmin){
       })
 }
 function createItem(data,newToken){
+  console.log(data)
    
+   
+    const newItem={
+
+    
+      "name":data.name,
+      "price":data.price,
+      "img":data.img,
+      "desc":data.desc,
+      "inventory":data.inventory,
+      "type":data.type
+      
+    }
+    return fetch("http://localhost:8000/additem", {
+      method:"POST",
+      body:JSON.stringify(newItem),
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization": `Bearer ${newToken}`,
+      }
+      
+    })
+
+   }
     
   
-  const newItem={
-
-    
-    "name":data.name,
-    "price":data.price,
-    "img":data.img,
-    "desc":data.desc,
-    "inventory":data.inventory,
-    "type":data.type
-    
-  }
-  return fetch("http://localhost:8000/additem", {
-    method:"POST",
-    body:JSON.stringify(newItem),
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization": `Bearer ${newToken}`,
-    }
-    
-  })
 
 
-}
+
+
 function findItem(filter,setItem,setFilter){
     
    
@@ -176,8 +190,11 @@ function Shop(props){
     }
     
     const [message,setMessage]=useState({
-        available:"product not available at this time"
+        available:true,
+        inputfield:true,
+        
     })
+
     const[Quantity, setQuantity]=useState({
         items:0,
         isUpdated:false,
@@ -293,21 +310,32 @@ function Shop(props){
         </Card> )}
         
        {props.userAdmin===true ? <AddForm newItem={(data)=>{
-            createItem(data,props.newToken).then(res=>res.json())
-            .then(
-             (result)=>{
-                 
-                 setItem({
-                     
-                     addstatus:"completed"
-                 })
-                 
-             }
-            )
+        if(data.name===null || data.price===null || data.img===null ||  data.desc===null || data.inventory===null || data.type===null){
+          console.log("null fields exist")
+          setMessage({
+            inputfield:false
+          })
+         }
+         else{
+          createItem(data,props.newToken).then(res=>res.json())
+          .then(
+           (result)=>{
+               
+               setItem({
+                   
+                   addstatus:"completed"
+               })
+               
+           }
+          )
+
+         }
+         
              }
             
         } ></AddForm>: null} 
         {showMessage(Quantity.isAvailable)}
+        {showInputMessage(message.inputfield)}
         </div>
        
         

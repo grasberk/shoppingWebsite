@@ -27,6 +27,8 @@ function AddForm(props) {
     type:null
   })
 
+  
+
   return (
     <Card className="block" style={{ width: "18rem" }}>
       <Card.Body>

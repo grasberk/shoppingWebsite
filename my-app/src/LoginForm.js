@@ -24,9 +24,7 @@ function LoginForm(props){
             return props.sendTokenData(tokendata)
             
         }
-        else{
-            console.log("no token passed")
-        }
+    
     }
 
     function sendEmail(email){

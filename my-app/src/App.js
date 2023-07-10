@@ -222,7 +222,7 @@ function navigateLogin(navigate,data,setReview){
   
 
 function showMessage(username,message){
-  console.log(message)
+  
   if (!username){
     return (
       
@@ -294,7 +294,7 @@ const[userReview,setUserReview]=useState({
       
       <div>
         
-        {console.log(message)}
+        
         {showMessage(username,message)}
         
       </div>
