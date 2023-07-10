@@ -20,6 +20,7 @@ app.use(express.json());
 app.listen(8000, () => console.log("Server is running"));
 
 const mongoose = require("mongoose");
+
 const { decrypt } = require("dotenv");
 
 mongoose.connect(process.env.REACT_APP_MONGODB_URI, {
@@ -59,14 +60,38 @@ const cartSchema=new mongoose.Schema({
 
 })
 const itemSchema=new mongoose.Schema({
-    id:Number,
-    name: String,
-    price:String,
-    img: String,
-    desc:String,
-    quantity:Number,
-    type:String,
-    inventory:Number
+    id:{
+      type: Number,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    price:{
+      type: String,
+      required: true
+    },
+    img: {
+      type: String,
+      required: true
+    },
+    desc:{
+      type: String,
+      required: true
+    },
+    quantity:{
+      type: Number,
+      required: true
+    },
+    type:{
+      type: String,
+      required: true
+    },
+    inventory:{
+      type: Number,
+      required: true
+    }
 
 })
 
@@ -345,6 +370,7 @@ app.post('/login', async (req,res)=>{
 //admin routes
 
 app.post("/additem", authenticateToken,  async (req,res)=>{
+
   console.log("add item running authenticating")
   const maxIdItem = await Item.findOne().sort('-id'); 
     const newId = maxIdItem ? maxIdItem.id + 1 : 0; 
