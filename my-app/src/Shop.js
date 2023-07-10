@@ -75,9 +75,9 @@ function createItem(data,newToken){
 
 
 function findItem(filter,setItem,setFilter){
-    
+    console.log(filter)
    
-        fetch(`http://localhost:8000/items/${filter.result}`, {
+        fetch(`http://localhost:8000/items/${filter}`, {
         method:"GET",
         headers:{
             "Content-Type":"application/json",
@@ -105,19 +105,7 @@ function findItem(filter,setItem,setFilter){
 
 }
 
-// function showTestMessage(testmessage){
-//     if(testmessage.result!="done"){
-//         return(
-//             <div>
-//                 <h1>{testmessage.result}</h1>
-//                 <h2>message from function</h2>
-//             </div>
-//         )
 
-//     }
-    
-    
-// }
 
 function Shop(props){
     
@@ -260,7 +248,11 @@ function Shop(props){
                 result:e.target.value
                 
               })}  ></Form.Control>
-                <select name="filter" onChange={(e) => setFilter({ result: e.target.value })}>
+              <select name="filter" onChange={(e) => {
+                setFilter({ result: e.target.value });
+                findItem(e.target.value, setItem, setFilter); // Call findItem on select change
+              }}>
+                {/* <select name="filter" onChange={(e) => setFilter({ result: e.target.value })}> */}
                   <option value="">Select an option</option>
                   <option value="fighting">Fighting</option>
                   <option value="sports">Sports</option>
@@ -271,7 +263,7 @@ function Shop(props){
               </Form.Group>
              
               
-              <Button onClick={()=>findItem(filter,setItem,setFilter)}> Submit</Button>
+              {/* <Button onClick={()=>findItem(filter,setItem,setFilter)}> Submit</Button> */}
               
               </Form>
               
