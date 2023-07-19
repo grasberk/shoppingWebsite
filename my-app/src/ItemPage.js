@@ -177,35 +177,36 @@ else{
         
     })
    if (product.product === null){
-
-    fetch(`http://localhost:8000/items/${params.itemid}`)
+   
+    console.log("params.itemid")
+    console.log(console.log(params.itemid))
+    fetch(`http://localhost:8000/item/${params.itemid}`)
+    
        .then(res=>res.json())
        .then(
         (result)=>{
+          console.log(result)
+          console.log("params.itemid")
+    console.log(console.log(params.itemid))
+          //need to only run show page after fetch
             
             setProduct({
-                product:props.productDetails,
+                product:result,
                 
                 
             })
-            getReviews(userReview,setUserReview,params.itemid,setUsername,props.userEmail)
+            getReviews(userReview,setUserReview,params.itemid)
         
         }
         
        )
        
    }
-   
-    
-    // if (userReview.reviews===null ){
-    //     getReviews(userReview,setUserReview,product.productId)
-    // }
-    
 
    if(product.product===null || userReview.reviews===null){
     
         return(
-            <h1>Item {params.itemid} not found</h1>
+            <h1>Loading...</h1>
             
         )
    }

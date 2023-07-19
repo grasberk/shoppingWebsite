@@ -43,7 +43,7 @@ function addToCart (data){
 
 function itemClicked(product,navigate,setProduct){
   setProduct(product)
-  //console.log(product)
+  console.log(product)
   navigate("/itempage/"+product.id)
 
   

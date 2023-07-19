@@ -101,8 +101,7 @@ const Cart=mongoose.model('Carts',cartSchema)
 const User=mongoose.model('Users',userSchema)
 
 function authenticateToken(req,res, next){
-  console.log("start of auth function")
-  console.log(req.headers)
+
   const authHeader = req.headers['authorization'];
 
   const token = authHeader && authHeader.split(' ')[1];
@@ -137,7 +136,7 @@ app.get('/reviews', async (req,res)=>{
 app.get('/reviews/:id', async (req,res)=>{
 
     
-  console.log(req.params.id)
+  
   const itemReviews=await Review.find({item_id:req.params.id})
   
   res.json(itemReviews)
@@ -178,7 +177,7 @@ app.get('/items', async(req,res)=>{
 app.get('/items/:filter', async(req,res)=>{
     const filter=req.params.filter
     
-    console.log(filter)
+    
   if(filter=== 'fighting'){
 
      someItems= await Item.find({type:filter})
@@ -214,11 +213,8 @@ else{
   
  
 })
-//find item by id
-app.get('/items/:id', async(req,res)=>{
-  const oneItem=await Item.findOne({id:req.params.id})
-  res.json(oneItem)
-})
+
+
 //find items by type
 
 // app.get('/items/type', async(req,res)=>{
@@ -228,9 +224,18 @@ app.get('/items/:id', async(req,res)=>{
 // })
 
 //cart routes
+//find item by id
+app.get('/item/:id', async(req,res)=>{
+    
+  
+  const oneItem= await Item.findOne({id:req.params.id})
+  res.json(oneItem)
+ 
+})
+
 app.get('/cart', async(req,res)=>{
   const allCart= await Cart.find()
-  //console.log(allCart)
+  
   res.json(allCart)
 
 });
@@ -274,7 +279,7 @@ app.delete("/cart/delete", async(req,res)=>{
   res.json(await Cart.find())
 
 
-  // console.log("remove from cart")
+  
  
  
 })
@@ -310,8 +315,7 @@ app.post("/signup", async (req,res)=>{
 
 const payload={email: newUser.email, isAdmin: newUser.isAdmin}
 const token=jwt.sign(payload, JWT_SECRET)
-console.log(jwt.verify(token, JWT_SECRET))
-console.log(token)
+
 const response ={
   email: newUser.email,
   token: token
@@ -326,15 +330,14 @@ res.json(response)
 app.post('/login', async (req,res)=>{
   const {email, password}=req.body
   const user = await User.findOne({email})
-  console.log(user)
+  
   if (user){
     const passwordMatch = bcrypt.compare(password, user.password).then((result)=>{
       if(result){
-        console.log("result")
-        console.log(result)
+        
         const payload = {email: user.email, isAdmin:user.isAdmin}
         const token=jwt.sign(payload, JWT_SECRET)
-        console.log(jwt.verify(token, JWT_SECRET))
+       
         
         const response ={
           email: user.email,
@@ -344,8 +347,7 @@ app.post('/login', async (req,res)=>{
         //res.json({token})
         res.json(response)
        
-        console.log("token")
-        console.log(token)
+       
       }
       else{
     
@@ -374,7 +376,7 @@ app.post('/login', async (req,res)=>{
 
 app.post("/additem", authenticateToken,  async (req,res)=>{
 
-  console.log("add item running authenticating")
+
   const maxIdItem = await Item.findOne().sort('-id'); 
     const newId = maxIdItem ? maxIdItem.id + 1 : 0; 
   const newItem = await Item.create({
@@ -397,8 +399,7 @@ res.json(newItem);
 })
 //delete item from shop working 
 app.delete("/shop/delete/:id", authenticateToken, async(req,res)=>{
-  console.log("remove from shop")
-  console.log(req.params.id)
+
   await Item.findOneAndDelete({id:req.params.id})
   
   res.json(await Item.find())
