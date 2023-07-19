@@ -51,7 +51,7 @@ const cartSchema=new mongoose.Schema({
     cart_id:Number,
     id:Number,
     name: String,
-    price:String,
+    price:Number,
     img: String,
     desc:String,
     quantity:Number,
@@ -69,7 +69,7 @@ const itemSchema=new mongoose.Schema({
       required: true
     },
     price:{
-      type: String,
+      type: Number,
       required: true
     },
     img: {
@@ -193,6 +193,7 @@ app.get('/items/:filter', async(req,res)=>{
  else if(filter=== 'priceLH'){
 
   someItems= await Item.find().sort({ price : 1 })
+  
   res.json(someItems)
 
 }

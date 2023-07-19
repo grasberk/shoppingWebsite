@@ -82,11 +82,11 @@ function findItem(filter,setItem,setFilter){
         headers:{
             "Content-Type":"application/json",
           }
-      }).then((res)=>{
-        return res.json()
-      }).then((filteredItems)=>{
-        
-        
+      }).then(res=>res.json())
+      .then(
+        (filteredItems)=>{
+        console.log("filter result")
+        console.log(filteredItems)
         setItem({
             result:filteredItems,
             status:"completed"
