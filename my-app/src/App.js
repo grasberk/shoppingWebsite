@@ -252,7 +252,13 @@ function showToken(token,setToken){
   console.log(token)
 }
 
-function showUsername(username,setUsername,setIsLoggedIn){
+function showUsername(username,setUsername,setIsLoggedIn,setIsUserLoggedIn){
+  if (username !== "admin@gmail.com"){
+    setIsUserLoggedIn(true)
+  }
+  else{
+    setIsUserLoggedIn(false)
+  }
   setUsername(username)
   setIsLoggedIn(true)
   console.log("showing username in application.js")
@@ -284,7 +290,8 @@ function App() {
   const [username,setUsername]=useState(null)
   const [message,setMessage]=useState(null)
   const [product,setProduct]=useState(null)
-  const [isLoggedIn, setIsLoggedIn]=useState(false)
+  const [isLoggedIn, setIsLoggedIn]=useState(null)
+  const [isUserLoggedIn, setIsUserLoggedIn]=useState(false)
 const [token, setToken]=useState(null);
 
   const navigate=useNavigate();
@@ -317,9 +324,13 @@ const[userReview,setUserReview]=useState({
         <Nav>
           <Nav.Item><Nav.Link as={Link} to="/shop"> Shop   </Nav.Link></Nav.Item>
 
-          <Nav.Item>{username && (<Nav.Link as={Link} to="/cart">Cart</Nav.Link> )}</Nav.Item>
-
           
+
+          <Nav.Item>
+            {username && isUserLoggedIn && (<Nav.Link as={Link} to="/cart">Cart</Nav.Link> )}
+            </Nav.Item>
+
+              
           <Nav.Item> <Nav.Link  as={Link} to="/home">  Home  </Nav.Link></Nav.Item>
           <Nav.Item> {!username && (<Nav.Link  as={Link} to="/login">  SignUp/Login </Nav.Link>)}</Nav.Item>
           <Nav.Item id="username">{username}</Nav.Item>
@@ -357,7 +368,7 @@ const[userReview,setUserReview]=useState({
             <Route path="/login" element={
 
                 <LoginForm sendTokenData={(tokenData)=>showToken(tokenData,setToken)}
-                sendUsername={(username)=>showUsername(username,setUsername,setIsLoggedIn)}
+                sendUsername={(username)=>showUsername(username,setUsername,setIsLoggedIn,setIsUserLoggedIn)}
                 sendAdmin={(isAdmin)=>showAdmin(isAdmin,setCheckAdmin)}
                 userLogged={username}
                 userReview={review}
