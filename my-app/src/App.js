@@ -107,9 +107,12 @@ function navigateLogin(navigate,data,setReview){
   navigate('/login')
 }
 
- function pushToCart(data,cart,setCart,username,isLogged,setMessage,navigate,isLoggedIn){
-  console.log(data)
- if (username===null ){
+ function pushToCart(data,username,setMessage,navigate){
+  console.log("show username:")
+
+  console.log(username)
+ if (username===null || username===false ){
+  
   
   setMessage("Please Log In!")
   navigate("/login")
@@ -321,7 +324,7 @@ const[userReview,setUserReview]=useState({
           <Nav.Item> {!username && (<Nav.Link  as={Link} to="/login">  SignUp/Login </Nav.Link>)}</Nav.Item>
           <Nav.Item id="username">{username}</Nav.Item>
 
-         {!username && <Button onClick={()=>{handleLogin(setIsLoggedIn,username,isLoggedIn,navigate,setUsername)}}>  Logout </Button>}
+         {username && <Button onClick={()=>{handleLogin(setIsLoggedIn,username,isLoggedIn,navigate,setUsername)}}>  Logout </Button>}
           
         </Nav>
         <h1 id="shoptitle"> GameMart </h1>
@@ -340,7 +343,7 @@ const[userReview,setUserReview]=useState({
             } />
              
              <Route path="/shop" element={
-                <Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,cart,setCart,username,isLogged,setMessage,navigate,isLoggedIn)}
+                <Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,username,setMessage,navigate)}
                 addItemToPage={(product)=> itemClicked(product,navigate,setProduct)}
                 //newMessage={message}
                 newToken={token}
@@ -369,7 +372,7 @@ const[userReview,setUserReview]=useState({
            <Route path="/itempage/:itemid" element={
                
                <ItemPage    
-               addToCart={(productData)=>pushToCart(productData,cart,setCart,username,setMessage,navigate,isLoggedIn)}
+               addToCart={(productData)=>pushToCart(productData,username,setMessage,navigate)}
                productDetails={product}
                userEmail={username}
                goToLogin={(data)=>navigateLogin(navigate,data,setReview)}
