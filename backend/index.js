@@ -193,7 +193,6 @@ app.get('/items/:filter', async(req,res)=>{
  else if(filter=== 'priceLH'){
 
   someItems= await Item.find().sort({ price : 1 })
-  
   res.json(someItems)
 
 }

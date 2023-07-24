@@ -9,13 +9,19 @@ import AddForm from "./AddForm";
 
 
 
-function showInputMessage(input){
+function showInputMessage(input,setMessage){
+  
+
   if (input===false){
+   
+      
       return <div className="alert" role="alert">
       Please enter valid inputs! 
       
     </div>
   }
+ 
+  
   
 }
 function showMessage(available){
@@ -76,8 +82,27 @@ function createItem(data,newToken){
 
 function findItem(filter,setItem,setFilter){
     console.log(filter)
-   
-        fetch(`http://localhost:8000/items/${filter}`, {
+    if (filter === "priceLH" || filter === "priceHL"){
+      
+      fetch(`http://localhost:8000/items/${filter}?sort=${filter}`, {
+        method:"GET",
+        headers:{
+            "Content-Type":"application/json",
+          },
+      }).then(res=>res.json())
+      .then(
+        (filteredItems)=>{
+        console.log("filter result")
+        console.log(filteredItems)
+        setItem({
+            result:filteredItems,
+            status:"completed"
+        })
+      })
+
+    }
+    else{
+      fetch(`http://localhost:8000/items/${filter}`, {
         method:"GET",
         headers:{
             "Content-Type":"application/json",
@@ -97,6 +122,10 @@ function findItem(filter,setItem,setFilter){
         })
         return filter
       })
+
+    }
+   
+        
 
     
     
@@ -323,7 +352,7 @@ function Shop(props){
               
             <div className="products">
                 
-            {sortedItems.map((product)=> 
+            {Item.result.map((product)=> 
             
             <Card key={product.id} greeting={"hi"} border={"dark"} className="block"  style={{ width: '20rem' }}>
             <Button className="itemButton" onClick={()=>props.addItemToPage(product)} >
@@ -381,9 +410,11 @@ function Shop(props){
           })
          }
          else{
+        
           createItem(data,props.newToken).then(res=>res.json())
           .then(
            (result)=>{
+            
                
                setItem({
                    
@@ -391,7 +422,11 @@ function Shop(props){
                })
                
            }
-          )
+          ).then(()=>{
+            setMessage({
+              inputfield:true
+            })
+          })
 
          }
          
@@ -399,7 +434,7 @@ function Shop(props){
             
         } ></AddForm>: null} 
         {showMessage(Quantity.isAvailable)}
-        {showInputMessage(message.inputfield)}
+        {showInputMessage(message.inputfield,setMessage)}
         </div>
        
         
