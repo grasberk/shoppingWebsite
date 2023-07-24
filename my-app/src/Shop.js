@@ -76,15 +76,27 @@ function createItem(data,newToken){
    }
     
   
+function filterByPrice(filter,setItem){
 
+  if (filter==="priceLH"){
+    fetch(`http://localhost:8000/items/priceLH`, {
+        method:"GET",
+        headers:{
+            "Content-Type":"application/json",
+          },
+      }).then(res=>res.json())
+      .then(
+        (filteredItems)=>{
+          
+        console.log("filter result")
+        console.log(filteredItems)
+        return filteredItems
+        
+      })
 
-
-
-function findItem(filter,setItem,setFilter){
-    console.log(filter)
-    if (filter === "priceLH" || filter === "priceHL"){
-      
-      fetch(`http://localhost:8000/items/${filter}?sort=${filter}`, {
+  }
+  if (filter==="priceHL"){
+    fetch(`http://localhost:8000/items/priceHL`, {
         method:"GET",
         headers:{
             "Content-Type":"application/json",
@@ -94,11 +106,24 @@ function findItem(filter,setItem,setFilter){
         (filteredItems)=>{
         console.log("filter result")
         console.log(filteredItems)
-        setItem({
-            result:filteredItems,
-            status:"completed"
-        })
+          return filteredItems
+        
       })
+
+  }
+  
+}
+
+
+
+async function findItem(filter,setItem,setFilter){
+    console.log(filter)
+    if (filter === "priceLH" || filter === "priceHL"){
+      const filteredItems= await filterByPrice(filter,setItem)
+      console.log(filteredItems)
+      console.log("filteringbyprice")
+      
+       
 
     }
     else{
@@ -334,6 +359,7 @@ function Shop(props){
               <select name="filter" onChange={(e) => {
                 setFilter({ result: e.target.value });
                 findItem(e.target.value, setItem, setFilter); // Call findItem on select change
+                
               }}>
                 {/* <select name="filter" onChange={(e) => setFilter({ result: e.target.value })}> */}
                   <option value="">Select an option</option>

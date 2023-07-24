@@ -268,7 +268,7 @@ function Cart(props){
             
         
             <div >
-               <h1>{props.user}</h1>
+              
                 <h1>Cart Page </h1>
                 {showMessage(total,setTotal,cart)}
                 <div className="products">
