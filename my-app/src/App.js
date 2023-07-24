@@ -132,7 +132,7 @@ function navigateLogin(navigate,data,setReview){
         console.log("userinfo")
         console.log(result)
         console.log(result.cart_id)
-        setCartID(result.cart_id)
+        
         return result.cart_id
       }).then((cartID)=>{
         console.log(cartID)
@@ -145,6 +145,7 @@ function navigateLogin(navigate,data,setReview){
     if(result[0]===false){
     
         if (data!=null&& data.quantity!==0){
+          setCartID(result[1])
           console.log("showing cart ID")
           console.log(result[1])
      
@@ -356,7 +357,10 @@ const[userReview,setUserReview]=useState({
             
             } />
             
-            <Route path="/cart" element={username ? <Cart /> : null} />
+            <Route path="/cart" element={username ? <Cart 
+              user={username}
+
+            /> : null} />
 
            <Route path="/itempage/:itemid" element={
                

@@ -235,7 +235,14 @@ app.get('/item/:id', async(req,res)=>{
   res.json(oneItem)
  
 })
-
+//show all items in cart with same cart id
+app.get('/cart/:cartid', async(req,res)=>{
+    
+  
+  const userCart= await Cart.find({cart_id:req.params.cartid})
+  res.json(userCart)
+ 
+})
 app.get('/cart', async(req,res)=>{
   const allCart= await Cart.find()
   

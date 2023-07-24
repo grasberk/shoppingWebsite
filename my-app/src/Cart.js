@@ -217,38 +217,50 @@ function Cart(props){
         total:0
     })
     
-    
-      
-    //  fetch("http://localhost:8000/cart")
-    //     .then(res=>res.json())
-    //     .then(
-    //      (result)=>{
-             
-    //          setCart({
-    //              result:result,
-    //              status:!false
-    //          })
-             
-    //      }
-    //     )
         
      
     if (cart.status!==true){
+        fetch(`http://localhost:8000/users/${props.user}`, {
+            method:"GET",
+            headers:{
+                "Content-Type":"application/json",
+              }
+          }).then(res=>res.json())
+          .then(
+            (result)=>{
+            console.log(result.cart_id)
+            
+            return result.cart_id
+          }).then((cartid)=>{
+            fetch(`http://localhost:8000/cart/${cartid}`).then(res=>res.json()).then(
+                (result)=>{
+                    console.log(result)
+                        setCart({
+                            result:result,
+                            status:!cart.status
+                        })
+                    
+                    
+                    
+                }
+               )
+            
+          })
       
-        fetch("http://localhost:8000/cart")
-        .then(res=>res.json())
-        .then(
-         (result)=>{
+        // fetch("http://localhost:8000/cart")
+        // .then(res=>res.json())
+        // .then(
+        //  (result)=>{
              
-                 setCart({
-                     result:result,
-                     status:!cart.status
-                 })
+        //          setCart({
+        //              result:result,
+        //              status:!cart.status
+        //          })
              
              
              
-         }
-        )
+        //  }
+        // )
      }
  
     if(cart.status===true){
@@ -256,7 +268,7 @@ function Cart(props){
             
         
             <div >
-               
+               <h1>{props.user}</h1>
                 <h1>Cart Page </h1>
                 {showMessage(total,setTotal,cart)}
                 <div className="products">
