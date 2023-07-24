@@ -46,13 +46,13 @@ function showMessage(total,setTotal,cart){
   </div>
 }
 function checkout(cart,total,setTotal){
-     console.log(cart.result)
+     
     
     let value=0
  
     cart.result.forEach(product => {
       
-        value+=(product.price*product.quantity)
+        
         
 
         fetch(`http://localhost:8000/shop/update/${product.id}`, {
@@ -78,13 +78,14 @@ function checkout(cart,total,setTotal){
     })
         
     });
-    setTotal({
-        total:value
-    })
-    
-    console.log(value)
+  
+        
         fetch("http://localhost:8000/cart/delete", {
             method:"DELETE",
+          }).then(()=>{
+            setTotal({
+                total:0
+            })
           })
           
 
