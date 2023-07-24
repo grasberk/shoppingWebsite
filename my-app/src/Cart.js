@@ -3,7 +3,43 @@ import Card from 'react-bootstrap/Card';
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import './myStyles.css'
-function showMessage(total){
+
+function findTotal(cart,total){
+    let costOfItems=[]
+    let sum=0;
+    cart.result.forEach(function addTotal (item){
+        costOfItems.push(item.quantity*item.price)
+        console.log(costOfItems)
+        
+    })
+    console.log(costOfItems)
+    for (let i=0; i < costOfItems.length; i++){
+        sum += costOfItems[i]
+    }
+    if (total.total!=sum){
+        return sum;
+    }
+    else{
+        return false;
+    }
+    
+    
+
+}
+function showMessage(total,setTotal,cart){
+    
+    let totalCost=findTotal(cart, total)
+    
+    if (totalCost!=false ){
+        setTotal({
+            total: totalCost,
+            
+        })
+
+    }
+    
+   
+    
     return <div id="total" className="alert" role="alert">
     Total: ${total.total} 
     
@@ -177,6 +213,7 @@ function Cart(props){
 
     })
     const[total,setTotal]=useState({
+        status: "pending",
         total:0
     })
     
@@ -221,7 +258,7 @@ function Cart(props){
             <div >
                
                 <h1>Cart Page </h1>
-                {showMessage(total)}
+                {showMessage(total,setTotal,cart)}
                 <div className="products">
                 {cart.result.map(item=>
                 <Card key={item.id} style={{ width: '18rem' }}>
