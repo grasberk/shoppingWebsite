@@ -9,10 +9,10 @@ function findTotal(cart,total){
     let sum=0;
     cart.result.forEach(function addTotal (item){
         costOfItems.push(item.quantity*item.price)
-        console.log(costOfItems)
+     
         
     })
-    console.log(costOfItems)
+    
     for (let i=0; i < costOfItems.length; i++){
         sum += costOfItems[i]
     }
@@ -120,8 +120,7 @@ function remove(product,setUpdateCart,updateCart,setCart){
 
 function Cart(props){
     function editQuantity(product){
-        console.log(product.id)
-        console.log(product.quantity)
+       
         fetch(`http://localhost:8000/cart/update/${product.id}`, {
             method: "PUT",
             headers:{
@@ -169,7 +168,7 @@ function Cart(props){
     
     }
     function removeQ(product,updateQuantity,increment){
-      console.log(product)
+      
         if (product.inventory!==0&&product.quantity<product.inventory){
             
             if(product.quantity>=1){

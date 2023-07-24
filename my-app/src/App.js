@@ -26,6 +26,7 @@ function addToCart (data){
       {
         //user_id: req.body.user_id,
         id:data.product.id,
+        
         cart_id:1,
         name: data.product.name,
         price:data.product.price,
@@ -43,7 +44,7 @@ function addToCart (data){
 
 function itemClicked(product,navigate,setProduct){
   setProduct(product)
-  console.log(product)
+  
   navigate("/itempage/"+product.id)
 
   
@@ -66,8 +67,8 @@ function checkoutPage(navigate,cart,setCart){
           
 }
 
-function checkCart(data){
-  console.log(data)
+function checkCart(data,cartID){
+  
   
   const cartids=[]
 
@@ -89,9 +90,8 @@ return fetch("http://localhost:8000/cart")
         }).then(()=>{
           const x=cartids.includes(data.id)
           
-         console.log("return of check is: ")
-         console.log(x)
-          return x
+        
+          return [x,cartID]
           
         })
           
@@ -102,72 +102,51 @@ return fetch("http://localhost:8000/cart")
           
 
 function navigateLogin(navigate,data,setReview){
-  console.log(data)
+
   setReview(data)
   navigate('/login')
 }
 
- function pushToCart(data,username,setMessage,navigate){
+ function pushToCart(data,username,setMessage,navigate,setCartID,cartID){
   console.log("show username:")
-
   console.log(username)
  if (username===null || username===false ){
   
   
   setMessage("Please Log In!")
   navigate("/login")
-//   if (data!=null&& data.quantity!==0 ){
-     
-//     fetch("http://localhost:8000/addToCart", {
-//           method: "POST",
-//           headers:{
-//               'Content-Type': 'application/json'
-//           },
-//           body: JSON.stringify(
-//       {
-//         //user_id: req.body.user_id,
-//         id:data.id,
-//         cart_id:1,
-//         name: data.name,
-//         price:data.price,
-//         img: data.img,
-//         desc:data.desc,
-//         quantity:data.quantity,
-//         type:data.type,
-//         inventory:data.inventory
-//       }
-//     )
-//       })
-       
-  
-  
-// }
+
   
 
  }
- 
-  console.log("start push to cart")
-  // fetch("http://localhost:8000/cart")
-  // .then(res=>res.json())
-  // .then(
-  //  (result)=>{
-  //      console.log(result)
-  //          setCart({
-  //              result:result,
-  //          })
-           
-       
-       
-       
-  //  }
-  // )
-  checkCart(data).then((checkResponse)=>{
-    console.log(checkResponse)
-    return checkResponse
-  }).then((result)=>{
-    if(result===false){
+ else{
+  console.log(username)
+  fetch(`http://localhost:8000/users/${username}`, {
+        method:"GET",
+        headers:{
+            "Content-Type":"application/json",
+          }
+      }).then(res=>res.json())
+      .then(
+        (result)=>{
+        console.log("userinfo")
+        console.log(result)
+        console.log(result.cart_id)
+        setCartID(result.cart_id)
+        return result.cart_id
+      }).then((cartID)=>{
+        console.log(cartID)
+        return checkCart(data,cartID)
+        
+      }).then((checkResponse)=>{
+        console.log(checkResponse)
+        return checkResponse
+      }).then((result)=>{
+    if(result[0]===false){
     
         if (data!=null&& data.quantity!==0){
+          console.log("showing cart ID")
+          console.log(result[1])
      
           fetch("http://localhost:8000/addToCart", {
                 method: "POST",
@@ -178,7 +157,7 @@ function navigateLogin(navigate,data,setReview){
             {
               //user_id: req.body.user_id,
               id:data.id,
-              cart_id:1,
+              cart_id:result[1],
               name: data.name,
               price:data.price,
               img: data.img,
@@ -195,8 +174,8 @@ function navigateLogin(navigate,data,setReview){
       }
     }
     else{
-      console.log(data)
-      console.log("start update")
+      
+      
       fetch(`http://localhost:8000/cart/update/${data.id}`, {
               method: "PUT",
               headers:{
@@ -206,7 +185,7 @@ function navigateLogin(navigate,data,setReview){
           {
            
               id:data.id,
-              cart_id:1,
+              cart_id:cartID,
               name: data.name,
               price:data.price,
               img: data.img,
@@ -220,10 +199,10 @@ function navigateLogin(navigate,data,setReview){
           })
   
     }
-    console.log("after check cart2")
+    
   })
   
- 
+}
  
   
 
@@ -248,8 +227,7 @@ function showMessage(username,message){
 
 function showToken(token,setToken){
   setToken(token)
-  console.log("showing token in app.js")
-  console.log(token)
+  
 }
 
 function showUsername(username,setUsername,setIsLoggedIn,setIsUserLoggedIn){
@@ -261,12 +239,11 @@ function showUsername(username,setUsername,setIsLoggedIn,setIsUserLoggedIn){
   }
   setUsername(username)
   setIsLoggedIn(true)
-  console.log("showing username in application.js")
-  console.log(username)
+ 
 }
 function showAdmin(isAdmin,setCheckAdmin){
   setCheckAdmin(isAdmin)
-  console.log(isAdmin)
+  
 }
 
 
@@ -277,7 +254,7 @@ const handleLogin = (setIsLoggedIn,username,isLoggedIn,navigate,setUsername) => 
     setIsLoggedIn(false);
   }
   
-  console.log(isLoggedIn)
+  
   navigate('/login')
   
 };
@@ -285,6 +262,7 @@ const handleLogin = (setIsLoggedIn,username,isLoggedIn,navigate,setUsername) => 
 
 
 function App() {
+  const [cartID, setCartID]=useState(null);
   const [review,setReview]=useState(null)
   const [checkAdmin,setCheckAdmin]=useState(false)
   const [username,setUsername]=useState(null)
@@ -354,7 +332,7 @@ const[userReview,setUserReview]=useState({
             } />
              
              <Route path="/shop" element={
-                <Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,username,setMessage,navigate)}
+                <Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,username,setMessage,navigate,setCartID,cartID)}
                 addItemToPage={(product)=> itemClicked(product,navigate,setProduct)}
                 //newMessage={message}
                 newToken={token}
@@ -383,7 +361,7 @@ const[userReview,setUserReview]=useState({
            <Route path="/itempage/:itemid" element={
                
                <ItemPage    
-               addToCart={(productData)=>pushToCart(productData,username,setMessage,navigate)}
+               addToCart={(productData)=>pushToCart(productData,username,setMessage,navigate,setCartID,cartID)}
                productDetails={product}
                userEmail={username}
                goToLogin={(data)=>navigateLogin(navigate,data,setReview)}

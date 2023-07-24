@@ -37,7 +37,8 @@ const userSchema=new mongoose.Schema({
   email: String,
   password: String,
   isAdmin:Boolean,
-  user_id: Number
+  user_id: Number,
+  cart_id:Number
 
 })
 
@@ -303,20 +304,28 @@ app.get('/users',async (req,res)=>{
   const allUsers=await User.find()
   res.json(allUsers)
 })
+//find user infor by email
+app.get('/users/:email',async (req,res)=>{
+  const oneUser=await User.findOne({email:req.params.email})
+  res.json(oneUser)
+})
 
 //signup
 
 app.post("/signup", async (req,res)=>{
   const { email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
-  const allUsers=await User.find()
+  const allUsers = await User.find().sort({ user_id: -1 });
   const newUser_id=allUsers.length>0 ? allUsers[0].user_id+1:0;
+  const allCarts = await Cart.find().sort({ cart_id: -1 });
+  const newCart_id = allCarts.length > 0 ? allCarts[0].cart_id + 1 : 0;
   const newUser = await User.create({
     email: req.body.email,
     password: hashedPassword,
     isAdmin:false,
 
     user_id:newUser_id,
+    cart_id:newUser_id,
 });
 
 const payload={email: newUser.email, isAdmin: newUser.isAdmin}
