@@ -32,10 +32,12 @@ mongoose.connection.on("connected", (err, res) => {
 });
 
 const userSchema=new mongoose.Schema({
+
   
   email: String,
   password: String,
-  isAdmin:Boolean
+  isAdmin:Boolean,
+  user_id: Number
 
 })
 
@@ -307,10 +309,14 @@ app.get('/users',async (req,res)=>{
 app.post("/signup", async (req,res)=>{
   const { email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+  const allUsers=await User.find()
+  const newUser_id=allUsers.length>0 ? allUsers[0].user_id+1:0;
   const newUser = await User.create({
     email: req.body.email,
     password: hashedPassword,
-    isAdmin:false
+    isAdmin:false,
+
+    user_id:newUser_id,
 });
 
 const payload={email: newUser.email, isAdmin: newUser.isAdmin}
