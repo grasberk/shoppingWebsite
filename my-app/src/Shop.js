@@ -454,7 +454,7 @@ function Shop(props){
             
                
                setItem({
-                   
+                   status:"pending",
                    addstatus:"completed"
                })
                
