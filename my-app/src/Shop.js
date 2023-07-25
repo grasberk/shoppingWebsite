@@ -118,15 +118,13 @@ function filterByPrice(filter,setItem){
 
 async function findItem(filter,setItem,setFilter){
     console.log(filter)
-    if (filter === "priceLH" || filter === "priceHL"){
-      const filteredItems= await filterByPrice(filter,setItem)
-      console.log(filteredItems)
-      console.log("filteringbyprice")
-      
-       
+    // if (filter === "priceLH" || filter === "priceHL"){
+    //   const filteredItems= await filterByPrice(filter,setItem)
+    //   console.log(filteredItems)
+    //   console.log("filteringbyprice")
 
-    }
-    if(filter!="alphabetically"){
+    // }
+    // if(filter!="alphabetically"){
       fetch(`http://localhost:8000/items/${filter}`, {
         method:"GET",
         headers:{
@@ -148,7 +146,7 @@ async function findItem(filter,setItem,setFilter){
         return filter
       })
 
-    }
+    // }
    
         
 
@@ -276,17 +274,17 @@ function Shop(props){
         
     }
 
-    function checkFilter(filter,Item){
-      console.log(filter)
-      console.log(Item)
-      if (filter==="alphabetically"){
-        return Item.result.slice().sort((a, b) => a.name.localeCompare(b.name));
-      }
-      else{
-        return Item
-      }
+    // function checkFilter(filter,Item){
+    //   console.log(filter)
+    //   console.log(Item)
+    //   if (filter==="alphabetically"){
+    //     return Item.result.slice().sort((a, b) => a.name.localeCompare(b.name));
+    //   }
+    //   else{
+    //     return Item
+    //   }
       
-    }
+    // }
     const [inventory,setInventory]=useState({
       isUpdated:false
     })
@@ -350,7 +348,7 @@ function Shop(props){
     //   if (nameA > nameB) return 1;
     //   return 0;
     // });
-    const sortedItems=checkFilter(filter,Item)
+    // const sortedItems=checkFilter(filter,Item)
     return(
         
         <div>
@@ -391,7 +389,7 @@ function Shop(props){
               
             <div className="products">
                 
-            {sortedItems.result.map((product)=> 
+            {Item.result.map((product)=> 
             
             <Card key={product.id} greeting={"hi"} border={"dark"} className="block"  style={{ width: '20rem' }}>
             <Button className="itemButton" onClick={()=>props.addItemToPage(product)} >

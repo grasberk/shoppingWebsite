@@ -180,8 +180,11 @@ app.get('/items', async(req,res)=>{
 app.get('/items/:filter', async(req,res)=>{
     const filter=req.params.filter
     
-    
-  if(filter=== 'fighting'){
+  if (filter==="alphabetically"){
+    someItems=await Item.find({}).sort({name: 1})
+    res.json(someItems)
+  }
+  else if(filter=== 'fighting'){
 
      someItems= await Item.find({type:filter})
      res.json(someItems)
