@@ -126,7 +126,7 @@ async function findItem(filter,setItem,setFilter){
        
 
     }
-    else{
+    if(filter!="alphabetically"){
       fetch(`http://localhost:8000/items/${filter}`, {
         method:"GET",
         headers:{
@@ -275,6 +275,18 @@ function Shop(props){
         
         
     }
+
+    function checkFilter(filter,Item){
+      console.log(filter)
+      console.log(Item)
+      if (filter==="alphabetically"){
+        return Item.result.slice().sort((a, b) => a.name.localeCompare(b.name));
+      }
+      else{
+        return Item
+      }
+      
+    }
     const [inventory,setInventory]=useState({
       isUpdated:false
     })
@@ -330,15 +342,15 @@ function Shop(props){
     
     // const [originalData,setOriginalData]=useState(Item)
    if(Item.status==="completed"){
-    
-    const sortedItems = Item.result.sort((a, b) => {
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
-      if (nameA < nameB) return -1;
-      if (nameA > nameB) return 1;
-      return 0;
-    });
-    
+   
+    // const sortedItems = Item.result.sort((a, b) => {
+    //   const nameA = a.name.toLowerCase();
+    //   const nameB = b.name.toLowerCase();
+    //   if (nameA < nameB) return -1;
+    //   if (nameA > nameB) return 1;
+    //   return 0;
+    // });
+    const sortedItems=checkFilter(filter,Item)
     return(
         
         <div>
@@ -363,6 +375,7 @@ function Shop(props){
               }}>
                 {/* <select name="filter" onChange={(e) => setFilter({ result: e.target.value })}> */}
                   <option value="">Select an option</option>
+                  <option value="alphabetically">A-Z</option>
                   <option value="fighting">Fighting</option>
                   <option value="sports">Sports</option>
                   <option value="priceLH">Price: Low to High</option>
@@ -378,7 +391,7 @@ function Shop(props){
               
             <div className="products">
                 
-            {Item.result.map((product)=> 
+            {sortedItems.result.map((product)=> 
             
             <Card key={product.id} greeting={"hi"} border={"dark"} className="block"  style={{ width: '20rem' }}>
             <Button className="itemButton" onClick={()=>props.addItemToPage(product)} >
