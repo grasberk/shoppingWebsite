@@ -1,6 +1,6 @@
 
 import Card from 'react-bootstrap/Card';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import './myStyles.css'
 
@@ -45,8 +45,6 @@ function showMessage(total,setTotal,cart){
     
   </div>
 }
-
-
 function checkout(cart,total,setTotal){
      
     

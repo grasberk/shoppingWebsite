@@ -12,7 +12,7 @@ import ItemPage from './ItemPage';
 import { useNavigate } from 'react-router-dom';
 import Checkout from './Checkout';
 import { Button } from 'react-bootstrap';
-
+import { ThemeProvider } from './ThemeContext';
 function addToCart (data){
   console.log(data)
   if (data!=null){
@@ -333,7 +333,7 @@ const[userReview,setUserReview]=useState({
             } />
              
              <Route path="/shop" element={
-                <Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,username,setMessage,navigate,setCartID,cartID)}
+                <ThemeProvider><Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,username,setMessage,navigate,setCartID,cartID)}
                 addItemToPage={(product)=> itemClicked(product,navigate,setProduct)}
                 //newMessage={message}
                 newToken={token}
@@ -342,7 +342,7 @@ const[userReview,setUserReview]=useState({
 
                 
                 
-                />
+                /> </ThemeProvider>
             } />
             <Route path="/login" element={
 

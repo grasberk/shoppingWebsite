@@ -5,6 +5,7 @@ import './myStyles.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from "react-bootstrap/Form";
 import AddForm from "./AddForm";
+import { useTheme } from "./ThemeContext";
 
 
 
@@ -162,7 +163,7 @@ async function findItem(filter,setItem,setFilter){
 function Shop(props){
   
    
-  
+  const {isDarkMode, toggleTheme}=useTheme();
   
  const[testmessage,setTestMessage]=useState({
     result:props.newMessage
@@ -351,12 +352,15 @@ function Shop(props){
     // const sortedItems=checkFilter(filter,Item)
     return(
         
-        <div>
+        <div className={isDarkMode ? "dark-theme" : "light-theme"}>
             
-           
+            <button id="toggleview"onClick={toggleTheme}>
+              {isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              </button>
               
                {/* {props.userLogged} */}
-            
+              
+              
             
             <Form id="filter"> 
             <Form.Group>
