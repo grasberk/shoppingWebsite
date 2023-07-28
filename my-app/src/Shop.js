@@ -412,6 +412,8 @@ function Shop(props){
              
             </Card.Text>
             
+            
+            {props.userAdmin===false ?<div>
             <Button onClick={()=>removeQ(product,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >-</Button>{product.quantity}
             <Button onClick={()=>addQ(product,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >+</Button>
                 
@@ -425,6 +427,7 @@ function Shop(props){
               
 
             }} >Submit</Button>
+            </div>: null }
            
 
             {props.userAdmin===true ? <Button variant="danger" onClick={()=>removemShop(product,setItem,props.newToken,props.userAdmin)} >Remove</Button> : null }
