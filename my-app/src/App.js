@@ -248,11 +248,12 @@ function showAdmin(isAdmin,setCheckAdmin){
 }
 
 
-const handleLogin = (setIsLoggedIn,username,isLoggedIn,navigate,setUsername) => {
+const handleLogin = (setIsLoggedIn,username,isLoggedIn,navigate,setUsername,setCheckAdmin) => {
   if(username){
     
     setUsername(false)
-    setIsLoggedIn(false);
+    setIsLoggedIn(false)
+    setCheckAdmin(false)
   }
   
   
@@ -314,7 +315,7 @@ const[userReview,setUserReview]=useState({
           <Nav.Item> {!username && (<Nav.Link  as={Link} to="/login">  SignUp/Login </Nav.Link>)}</Nav.Item>
           <Nav.Item id="username">{username}</Nav.Item>
 
-         {username && <Button onClick={()=>{handleLogin(setIsLoggedIn,username,isLoggedIn,navigate,setUsername)}}>  Logout </Button>}
+         {username && <Button onClick={()=>{handleLogin(setIsLoggedIn,username,isLoggedIn,navigate,setUsername,setCheckAdmin)}}>  Logout </Button>}
           
         </Nav>
         <h1 id="shoptitle"> GameMart </h1>
