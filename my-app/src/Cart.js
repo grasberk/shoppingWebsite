@@ -1,6 +1,6 @@
 
 import Card from 'react-bootstrap/Card';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import './myStyles.css'
 
@@ -45,7 +45,7 @@ function showMessage(total,setTotal,cart){
     
   </div>
 }
-function checkout(cart,total,setTotal){
+function checkout(cart,total,setTotal,setCart){
      
     
     let value=0
@@ -78,15 +78,27 @@ function checkout(cart,total,setTotal){
     })
         
     });
-  
+    console.log("cart before remove")
+        console.log(cart)
         
         fetch("http://localhost:8000/cart/delete", {
             method:"DELETE",
+          }).then((res=>res.json()))
+          .then((cart)=>{
+            console.log("cart after remove")
+            console.log(cart)
+            setCart({
+                cart:cart
+            })
+
           }).then(()=>{
             setTotal({
                 total:0
             })
           })
+            
+            
+          
           
 
         
@@ -119,6 +131,13 @@ function remove(product,setUpdateCart,updateCart,setCart){
 }
 
 function Cart(props){
+
+    useEffect(()=>{
+        
+
+    })
+
+
     function editQuantity(product){
        
         fetch(`http://localhost:8000/cart/update/${product.id}`, {
@@ -296,7 +315,7 @@ function Cart(props){
                 </Card>)}
                 
                 </div>
-                <Button onClick={()=>checkout(cart,total,setTotal)}>Checkout</Button>
+                <Button onClick={()=>checkout(cart,total,setTotal,setCart)}>Checkout</Button>
                 
                     
 
