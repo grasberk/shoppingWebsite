@@ -107,14 +107,17 @@ function navigateLogin(navigate,data,setReview){
   navigate('/login')
 }
 
- function pushToCart(data,username,setMessage,navigate,setCartID,cartID){
+ function pushToCart(data,username,setMessage,navigate,setCartID,cartID,setItemData){
   console.log("show username:")
   console.log(username)
  if (username===null || username===false ){
   
-  
+  console.log("no username")
+  console.log(data)
+  setItemData(data)
   setMessage("Please Log In!")
   navigate("/login")
+  
 
   
 
@@ -275,9 +278,7 @@ function App() {
 const [token, setToken]=useState(null);
 
   const navigate=useNavigate();
-  const[itemData,setItemData]=useState({
-    itemData:null
-  })
+  const[itemData,setItemData]=useState(null)
   const[cart,setCart]=useState({
     result:null
   })
@@ -334,7 +335,7 @@ const[userReview,setUserReview]=useState({
             } />
              
              <Route path="/shop" element={
-                <ThemeProvider><Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,username,setMessage,navigate,setCartID,cartID)}
+                <ThemeProvider><Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,username,setMessage,navigate,setCartID,cartID,setItemData)}
                 addItemToPage={(product)=> itemClicked(product,navigate,setProduct)}
                 //newMessage={message}
                 newToken={token}
@@ -353,6 +354,9 @@ const[userReview,setUserReview]=useState({
                 userLogged={username}
                 userReview={review}
                 productDetails={product}
+                itemData={itemData}
+                addToCart={(productData,username)=>pushToCart(productData,username,setMessage,navigate,setCartID,cartID)}
+
 
                 />
             

@@ -79,8 +79,9 @@ function LoginForm(props){
           })
         
     }
-      function loginSubmit (userEmail,userPassword,setTokenData,setUsername,userReview,productDetails){
+      function loginSubmit (userEmail,userPassword,setTokenData,setUsername,userReview,productDetails,itemData){
         console.log("start login")
+        console.log(itemData)
         return fetch("http://localhost:8000/login", {
             method: "POST",
             headers:{
@@ -103,6 +104,10 @@ function LoginForm(props){
             sendisAdmin(data.isAdmin)
             
             const token = data.token; // Access the token property in the response
+            if(userEmail!=null && itemData!=null){
+                console.log(itemData)
+                props.addToCart(itemData,userEmail)
+            }
             if (userEmail!=null && productDetails!=null){
                 fetch("http://localhost:8000/addReview", {
                   method: "POST",
@@ -172,7 +177,7 @@ return(
             <span> </span>
             
             <Button
-            variant="primary" onClick={()=>loginSubmit(email,password,setTokenData,setUseremail,props.userReview,props.productDetails)}>
+            variant="primary" onClick={()=>loginSubmit(email,password,setTokenData,setUseremail,props.userReview,props.productDetails,props.itemData)}>
                 Login
             </Button>
             
