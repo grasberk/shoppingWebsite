@@ -174,47 +174,49 @@ app.get('/items', async(req,res)=>{
     res.json(allItems)
    
 })
+app.get('/shop/genres', async (req,res)=>{
+  genres= await Item.distinct('type')
+  res.json(genres)
+})
 
 //filter by price
 
 app.get('/items/:filter', async(req,res)=>{
     const filter=req.params.filter
+    genres= await Item.distinct('type')
+    if(genres.includes(filter)){
+      
+      someItems= await Item.find({type:filter})
+      res.json(someItems)
+    }
+    else{
+      if (filter==="alphabetically"){
+        someItems=await Item.find({}).sort({name: 1})
+        res.json(someItems)
+      }
+     else if(filter=== 'priceLH'){
     
-  if (filter==="alphabetically"){
-    someItems=await Item.find({}).sort({name: 1})
-    res.json(someItems)
-  }
-  else if(filter=== 'fighting'){
+      someItems= await Item.find().sort({ price : 1 })
+      res.json(someItems)
+    
+    }
+    else if(filter=== 'priceHL'){
+    
+      someItems= await Item.find().sort({ price : -1 })
+      res.json(someItems)
+    
+    }
+    
+    else{
+    
+      someItems= await Item.find({ name : filter })
+          res.json(someItems)
+    
+    }
 
-     someItems= await Item.find({type:filter})
-     res.json(someItems)
+    }
+  
 
-  }
-  else if(filter=== 'sports'){
-
-    someItems= await Item.find({type:filter})
-    res.json(someItems)
-
- }
- else if(filter=== 'priceLH'){
-
-  someItems= await Item.find().sort({ price : 1 })
-  res.json(someItems)
-
-}
-else if(filter=== 'priceHL'){
-
-  someItems= await Item.find().sort({ price : -1 })
-  res.json(someItems)
-
-}
-
-else{
-
-  someItems= await Item.find({name:filter})
-    res.json(someItems)
-
-}
   
   
  

@@ -119,13 +119,6 @@ function filterByPrice(filter,setItem){
 
 async function findItem(filter,setItem,setFilter){
     console.log(filter)
-    // if (filter === "priceLH" || filter === "priceHL"){
-    //   const filteredItems= await filterByPrice(filter,setItem)
-    //   console.log(filteredItems)
-    //   console.log("filteringbyprice")
-
-    // }
-    // if(filter!="alphabetically"){
       fetch(`http://localhost:8000/items/${filter}`, {
         method:"GET",
         headers:{
@@ -158,11 +151,22 @@ async function findItem(filter,setItem,setFilter){
 
 }
 
-
+function getFilter(setShowFilters){
+  fetch(`http://localhost:8000/shop/genres`, {
+    method:"GET",
+    headers:{
+        "Content-Type":"application/json",
+      }
+  }).then((res=>res.json()))
+  .then((filters)=>{
+    console.log(filters)
+    setShowFilters(filters)
+  })
+}
 
 function Shop(props){
   
-   
+  const[showFilters,setShowFilters]=useState(null)
   const {isDarkMode, toggleTheme}=useTheme();
   
  const[testmessage,setTestMessage]=useState({
@@ -334,7 +338,9 @@ function Shop(props){
             
             
         }
-       )
+       ).then(()=>{
+        getFilter(setShowFilters)
+       })
     }
   
     
@@ -363,23 +369,31 @@ function Shop(props){
               
             
             <Form id="filter"> 
+            
+
             <Form.Group>
               <Form.Label>Filter by Name</Form.Label>
-              <Form.Control type="text" name="filter" placeholder="type full name" onChange={(e)=>setFilter({
+              <Form.Control type="text" name="filter" placeholder="type full name" 
+               onChange={(e) => {
+                setFilter({ result: e.target.value });
+                findItem(e.target.value, setItem, setFilter); // Call findItem on select change
                 
-                result:e.target.value
-                
-              })}  ></Form.Control>
-              <select name="filter" onChange={(e) => {
+              }}
+              ></Form.Control>
+              <select name="filter" 
+              onChange={(e) => {
                 setFilter({ result: e.target.value });
                 findItem(e.target.value, setItem, setFilter); // Call findItem on select change
                 
               }}>
+                {/* {console.log(showFilters)} */}
                 {/* <select name="filter" onChange={(e) => setFilter({ result: e.target.value })}> */}
+                  
                   <option value="">Select an option</option>
+                  {showFilters && showFilters.map((filter,index)=>(
+                    <option key={index} vlaue={filter}>{filter}</option>
+                  ))}
                   <option value="alphabetically">A-Z</option>
-                  <option value="fighting">Fighting</option>
-                  <option value="sports">Sports</option>
                   <option value="priceLH">Price: Low to High</option>
                   <option value="priceHL">Price: High to Low</option>
                 </select>
