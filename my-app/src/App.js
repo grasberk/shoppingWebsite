@@ -108,6 +108,7 @@ function navigateLogin(navigate,data,setReview){
 }
 
  function pushToCart(data,username,setMessage,navigate,setCartID,cartID,setItemData){
+  console.log(data)
   console.log("show username:")
   console.log(username)
  if (username===null || username===false ){

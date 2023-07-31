@@ -159,7 +159,7 @@ function getFilter(setShowFilters){
       }
   }).then((res=>res.json()))
   .then((filters)=>{
-    console.log(filters)
+    
     setShowFilters(filters)
   })
 }
@@ -176,6 +176,37 @@ function Shop(props){
     result:props.userLogged,
     status:false
  })
+ const [inventory,setInventory]=useState({
+  isUpdated:false
+})
+const [message,setMessage]=useState({
+    available:true,
+    inputfield:true,
+    
+})
+
+const[Quantity, setQuantity]=useState({
+    items:0,
+    isUpdated:false,
+    isAvailable:true,
+    dataSent:false
+})
+
+const[filter,setFilter]=useState({
+    result: null,
+    status:false
+})
+const[filterCart,setFilterCart]=useState({
+    filterCart:null
+})
+
+
+const[Item,setItem]=useState({
+    result:null,
+    status:"pending",
+    addstatus:"null",
+    showQuantity:true
+});
  
 
 
@@ -279,50 +310,40 @@ function Shop(props){
         
     }
 
-    // function checkFilter(filter,Item){
-    //   console.log(filter)
-    //   console.log(Item)
-    //   if (filter==="alphabetically"){
-    //     return Item.result.slice().sort((a, b) => a.name.localeCompare(b.name));
-    //   }
-    //   else{
-    //     return Item
-    //   }
-      
-    // }
-    const [inventory,setInventory]=useState({
-      isUpdated:false
-    })
-    const [message,setMessage]=useState({
-        available:true,
-        inputfield:true,
+  
+    // const [inventory,setInventory]=useState({
+    //   isUpdated:false
+    // })
+    // const [message,setMessage]=useState({
+    //     available:true,
+    //     inputfield:true,
         
-    })
+    // })
 
-    const[Quantity, setQuantity]=useState({
-        items:0,
-        isUpdated:false,
-        isAvailable:true,
-        dataSent:false
-    })
+    // const[Quantity, setQuantity]=useState({
+    //     items:0,
+    //     isUpdated:false,
+    //     isAvailable:true,
+    //     dataSent:false
+    // })
 
-    const[filter,setFilter]=useState({
-        result: null,
-        status:false
-    })
-    const[filterCart,setFilterCart]=useState({
-        filterCart:null
-    })
+    // const[filter,setFilter]=useState({
+    //     result: null,
+    //     status:false
+    // })
+    // const[filterCart,setFilterCart]=useState({
+    //     filterCart:null
+    // })
     
-    // function addToCart(productInfo){
+    // // function addToCart(productInfo){
 
-    // }
-    const[Item,setItem]=useState({
-        result:null,
-        status:"pending",
-        addstatus:"null",
-        showQuantity:true
-    });
+    // // }
+    // const[Item,setItem]=useState({
+    //     result:null,
+    //     status:"pending",
+    //     addstatus:"null",
+    //     showQuantity:true
+    // });
     if (Item.status!=="completed" && filter.status===false){
       
        fetch("http://localhost:8000/items")
