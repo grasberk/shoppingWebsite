@@ -370,7 +370,7 @@ const[userReview,setUserReview]=useState({
            <Route path="/itempage/:itemid" element={
                
                <ItemPage    
-               addToCart={(productData)=>pushToCart(productData,username,setMessage,navigate,setCartID,cartID)}
+               addToCart={(productData)=>pushToCart(productData,username,setMessage,navigate,setCartID,cartID,setItemData)}
                productDetails={product}
                userEmail={username}
                goToLogin={(data)=>navigateLogin(navigate,data,setReview)}
