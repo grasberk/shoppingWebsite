@@ -391,7 +391,7 @@ function Shop(props){
                   
                   <option value="">Select an option</option>
                   {showFilters && showFilters.map((filter,index)=>(
-                    <option key={index} vlaue={filter}>{filter}</option>
+                    <option key={index} value={filter}>{filter}</option>
                   ))}
                   <option value="alphabetically">A-Z</option>
                   <option value="priceLH">Price: Low to High</option>

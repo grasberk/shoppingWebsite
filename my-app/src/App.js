@@ -135,6 +135,7 @@ function navigateLogin(navigate,data,setReview){
         console.log("userinfo")
         console.log(result)
         console.log(result.cart_id)
+        setMessage(null)
         
         return result.cart_id
       }).then((cartID)=>{
