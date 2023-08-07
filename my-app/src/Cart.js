@@ -1,4 +1,3 @@
-
 import Card from 'react-bootstrap/Card';
 import { useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
@@ -132,10 +131,6 @@ function remove(product,setUpdateCart,updateCart,setCart){
 
 function Cart(props){
 
-    useEffect(()=>{
-        
-
-    })
 
 
     function editQuantity(product){

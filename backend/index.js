@@ -83,10 +83,6 @@ const itemSchema=new mongoose.Schema({
       type: String,
       required: true
     },
-    quantity:{
-      type: Number,
-      required: true
-    },
     type:{
       type: String,
       required: true
@@ -108,24 +104,16 @@ function authenticateToken(req,res, next){
   const authHeader = req.headers['authorization'];
 
   const token = authHeader && authHeader.split(' ')[1];
-  // if (!token){
-  //   console.log("error")
-  // }
+
   const decoded = jwt.verify(token, JWT_SECRET);
     console.log("if token function")
       console.log(decoded)
       if (decoded.isAdmin === true) {
-        next(); // Allow access to the route 
+        next(); 
       } 
     }
-    //next(); 
   
   
-
-
-
-//review routes
-//get all reviews
 app.get('/reviews', async (req,res)=>{
     
   const allReviews=await Review.find()
@@ -148,16 +136,13 @@ app.get('/reviews/:id', async (req,res)=>{
   
     });
 
-//create review
 
-//test
 app.get('/test',(req,res)=>{
     res.send({message: "Hello from backend!"})
 })
 
 app.post('/addReview', async (req,res)=>{
   const newReview = await Review.create({
-    // _id: 0,
     item_id:req.body.item_id,
     name: req.body.name,
     message:req.body.message
@@ -413,7 +398,6 @@ app.post("/additem", authenticateToken,  async (req,res)=>{
     price:req.body.price,
     img:req.body.img,
     desc:req.body.desc,
-    quantity:0,
     inventory:req.body.inventory,
     type:req.body.type
     

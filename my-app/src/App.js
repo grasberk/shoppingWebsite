@@ -13,34 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import Checkout from './Checkout';
 import { Button } from 'react-bootstrap';
 import { ThemeProvider } from './ThemeContext';
-function addToCart (data){
-  console.log(data)
-  if (data!=null){
-    console.log(data.product.name)
-    fetch("http://localhost:8000/addToCart", {
-          method: "POST",
-          headers:{
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(
-      {
-        //user_id: req.body.user_id,
-        id:data.product.id,
-        
-        cart_id:1,
-        name: data.product.name,
-        price:data.product.price,
-        img: data.product.img,
-        desc:data.product.desc,
-        quantity:data.product.quantity,
-        type:data.product.type,
-        inventory:data.product.inventory
-      }
-    )
-      })
-  }
-  
-}
+
 
 function itemClicked(product,navigate,setProduct){
   setProduct(product)
@@ -50,29 +23,9 @@ function itemClicked(product,navigate,setProduct){
   
 }
 
-function checkoutPage(navigate,cart,setCart){
-  navigate("/checkout")
-  fetch("http://localhost:8000/cart")
-        .then((res)=>{
-          return res.json()
-        }).then(
-          (result)=>{
-              
-              setCart({
-                  result:result
-                  
-              })
-              
-          })
-          
-}
-
 function checkCart(data,cartID){
-  
-  
+
   const cartids=[]
-
-
 
 return fetch("http://localhost:8000/cart")
         .then((res)=>{
@@ -107,14 +60,10 @@ function navigateLogin(navigate,data,setReview){
   navigate('/login')
 }
 
- function pushToCart(data,username,setMessage,navigate,setCartID,cartID,setItemData){
-  console.log(data)
-  console.log("show username:")
-  console.log(username)
+ function pushToCart(data,username,setMessage,navigate,setCartID,cartID,setItemData,itemQuantity){
+  
  if (username===null || username===false ){
   
-  console.log("no username")
-  console.log(data)
   setItemData(data)
   setMessage("Please Log In!")
   navigate("/login")
@@ -124,7 +73,7 @@ function navigateLogin(navigate,data,setReview){
 
  }
  else{
-  console.log(username)
+  
   fetch(`http://localhost:8000/users/${username}`, {
         method:"GET",
         headers:{
@@ -133,26 +82,23 @@ function navigateLogin(navigate,data,setReview){
       }).then(res=>res.json())
       .then(
         (result)=>{
-        console.log("userinfo")
-        console.log(result)
-        console.log(result.cart_id)
         setMessage(null)
         
         return result.cart_id
       }).then((cartID)=>{
-        console.log(cartID)
+     
         return checkCart(data,cartID)
         
       }).then((checkResponse)=>{
-        console.log(checkResponse)
+        
         return checkResponse
       }).then((result)=>{
     if(result[0]===false){
     
         if (data!=null&& data.quantity!==0){
+          console.log(itemQuantity)
           setCartID(result[1])
-          console.log("showing cart ID")
-          console.log(result[1])
+          
      
           fetch("http://localhost:8000/addToCart", {
                 method: "POST",
@@ -161,14 +107,14 @@ function navigateLogin(navigate,data,setReview){
                 },
                 body: JSON.stringify(
             {
-              //user_id: req.body.user_id,
+             
               id:data.id,
               cart_id:result[1],
               name: data.name,
               price:data.price,
               img: data.img,
               desc:data.desc,
-              quantity:data.quantity,
+              quantity:itemQuantity,
               type:data.type,
               inventory:data.inventory
             }
@@ -196,7 +142,7 @@ function navigateLogin(navigate,data,setReview){
               price:data.price,
               img: data.img,
               desc:data.desc,
-              quantity:data.quantity,
+              quantity:itemQuantity,
               type:data.type,
               inventory:data.inventory
             
@@ -209,11 +155,6 @@ function navigateLogin(navigate,data,setReview){
   })
   
 }
- 
-  
-
-  
-            
 
           }
   
@@ -284,7 +225,7 @@ const [token, setToken]=useState(null);
   const[cart,setCart]=useState({
     result:null
   })
-// cart:[]
+
 const[userReview,setUserReview]=useState({
   reviews:[],
   recieved:false,
@@ -337,9 +278,8 @@ const[userReview,setUserReview]=useState({
             } />
              
              <Route path="/shop" element={
-                <ThemeProvider><Shop addToCart={(cardData,isLogged)=>pushToCart(cardData,username,setMessage,navigate,setCartID,cartID,setItemData)}
+                <ThemeProvider><Shop addToCart={(cardData,isLogged,itemQuantity)=>pushToCart(cardData,username,setMessage,navigate,setCartID,cartID,setItemData,itemQuantity)}
                 addItemToPage={(product)=> itemClicked(product,navigate,setProduct)}
-                //newMessage={message}
                 newToken={token}
                 userLogged={username}
                 userAdmin={checkAdmin}

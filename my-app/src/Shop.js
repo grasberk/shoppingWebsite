@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './myStyles.css'
@@ -7,12 +7,16 @@ import Form from "react-bootstrap/Form";
 import AddForm from "./AddForm";
 import { useTheme } from "./ThemeContext";
 
-
-
-
-function showInputMessage(input,setMessage){
+function showMessage(available){
+  if (available===false){
+      return <div className="alert" role="alert">
+      Product not available! 
+      
+    </div>
+  }
   
-
+}
+function showInputMessage(input){
   if (input===false){
    
       
@@ -21,21 +25,9 @@ function showInputMessage(input,setMessage){
       
     </div>
   }
- 
-  
-  
 }
-function showMessage(available){
-    if (available===false){
-        return <div className="alert" role="alert">
-        Product not available! 
-        
-      </div>
-    }
-    
-}
-function removemShop(data,setItem,newToken,userAdmin){
-    console.log(userAdmin)
+
+function removeShop(data,setItem,newToken){
     fetch(`http://localhost:8000/shop/delete/${data.id}`, {
         method:"DELETE",
         headers:{
@@ -50,9 +42,6 @@ function removemShop(data,setItem,newToken,userAdmin){
       })
 }
 function createItem(data,newToken){
-  console.log(data)
-   
-   
     const newItem={
 
     
@@ -76,49 +65,9 @@ function createItem(data,newToken){
 
    }
     
-  
-function filterByPrice(filter,setItem){
-
-  if (filter==="priceLH"){
-    fetch(`http://localhost:8000/items/priceLH`, {
-        method:"GET",
-        headers:{
-            "Content-Type":"application/json",
-          },
-      }).then(res=>res.json())
-      .then(
-        (filteredItems)=>{
-          
-        console.log("filter result")
-        console.log(filteredItems)
-        return filteredItems
-        
-      })
-
-  }
-  if (filter==="priceHL"){
-    fetch(`http://localhost:8000/items/priceHL`, {
-        method:"GET",
-        headers:{
-            "Content-Type":"application/json",
-          },
-      }).then(res=>res.json())
-      .then(
-        (filteredItems)=>{
-        console.log("filter result")
-        console.log(filteredItems)
-          return filteredItems
-        
-      })
-
-  }
-  
-}
-
-
 
 async function findItem(filter,setItem,setFilter){
-    console.log(filter)
+    
       fetch(`http://localhost:8000/items/${filter}`, {
         method:"GET",
         headers:{
@@ -127,8 +76,7 @@ async function findItem(filter,setItem,setFilter){
       }).then(res=>res.json())
       .then(
         (filteredItems)=>{
-        console.log("filter result")
-        console.log(filteredItems)
+        
         setItem({
             result:filteredItems,
             status:"completed"
@@ -139,14 +87,6 @@ async function findItem(filter,setItem,setFilter){
         })
         return filter
       })
-
-    // }
-   
-        
-
-    
-    
-
 
 
 }
@@ -164,60 +104,57 @@ function getFilter(setShowFilters){
   })
 }
 
+function initializeLocalQuantity(products){
+  const quantityObject = {};
+  products.forEach((product)=>{
+    quantityObject[product.id]=0;
+  });
+  return quantityObject;
+}
+
 function Shop(props){
   
-  const[showFilters,setShowFilters]=useState(null)
-  const {isDarkMode, toggleTheme}=useTheme();
+  const [localQuantity,setLocalQuantity]=useState({})
+  const [checkQuantity,setCheckQuantity]=useState({
+    isAvailable:true
+  })
+  const [inventory,setInventory]=useState({
+    isUpdated:false
+  })
+  const [message,setMessage]=useState({
+      available:true,
+      inputfield:true,
+      
+  })
+
+  const[filter,setFilter]=useState({
+      result: null,
+      status:false
+  })
   
- const[testmessage,setTestMessage]=useState({
-    result:props.newMessage
- })
- const[username,setUsername]=useState({
-    result:props.userLogged,
-    status:false
- })
- const [inventory,setInventory]=useState({
-  isUpdated:false
-})
-const [message,setMessage]=useState({
-    available:true,
-    inputfield:true,
-    
-})
+ 
+  const[Item,setItem]=useState({
+      result:null,
+      status:"pending",
+      addstatus:"null",
+      showQuantity:true
+  });
 
-const[Quantity, setQuantity]=useState({
-    items:0,
-    isUpdated:false,
-    isAvailable:true,
-    dataSent:false
-})
+  const[showFilters,setShowFilters]=useState(null)
 
-const[filter,setFilter]=useState({
-    result: null,
-    status:false
-})
-const[filterCart,setFilterCart]=useState({
-    filterCart:null
-})
+  const {isDarkMode, toggleTheme}=useTheme();
 
-
-const[Item,setItem]=useState({
-    result:null,
-    status:"pending",
-    addstatus:"null",
-    showQuantity:true
-});
+   
+  useEffect(() => {
+    if (Item.status === "completed") {
+      const initializedQuantity = initializeLocalQuantity(Item.result);
+      setLocalQuantity(initializedQuantity);
+    }
+  }, [Item.status]);
  
 
-
-    //only add to cart if within inventory limits done
-    //move reviews to item page done
-    //should not be able to add to cart if quantity is zero done
-    //checkout component inventory affects quantity 
-    //make cart have updated fields for same item instead of new items added to cart db
-
     function editInventory(product){
-      console.log(product.inventory)
+      
       fetch(`http://localhost:8000/shop/update/${product.id}`, {
         method: "PUT",
         headers:{
@@ -232,7 +169,6 @@ const[Item,setItem]=useState({
         price:product.price,
         img: product.img,
         desc:product.desc,
-        quantity:product.quantity,
         inventory:product.inventory,
         type:product.type
       
@@ -258,92 +194,42 @@ const[Item,setItem]=useState({
 
 
     }
+    function addQ(product) {
+      if (localQuantity[product.id] < product.inventory) {
 
-    function addQ(product,updateQuantity,increment,){
-        
-            if (product.inventory!==0&&product.quantity<product.inventory ){
-                
-                product.quantity++
-            // setProduct(products)
-            updateQuantity({
-                isUpdated:!increment
-            })
-            }
-
-        
-       
-        else{
-            
-            updateQuantity({
-                isAvailable:false
-            })
-
-        }
-        
-        
-    }
-    function removeQ(product,updateQuantity,increment){
-        
-            if (product.inventory!==0&&product.quantity<product.inventory){
-                
-                if(product.quantity>=1){
-                    product.quantity--
-                   // setProduct(products)
-                   updateQuantity({
-                       isUpdated:!increment
-                   })
-                   
-       
-               }
-            }
-
-        
-        
-        else{
-            
-            updateQuantity({
-                isAvailable:false
-            })
-        }
-        
-        
-        
-    }
-
-  
-    // const [inventory,setInventory]=useState({
-    //   isUpdated:false
-    // })
-    // const [message,setMessage]=useState({
-    //     available:true,
-    //     inputfield:true,
-        
-    // })
-
-    // const[Quantity, setQuantity]=useState({
-    //     items:0,
-    //     isUpdated:false,
-    //     isAvailable:true,
-    //     dataSent:false
-    // })
-
-    // const[filter,setFilter]=useState({
-    //     result: null,
-    //     status:false
-    // })
-    // const[filterCart,setFilterCart]=useState({
-    //     filterCart:null
-    // })
+        setLocalQuantity((prevQuantity) => ({
+          ...prevQuantity,
+          [product.id]: prevQuantity[product.id] + 1,
+        }));
+        setCheckQuantity({ isAvailable: true });
+      }else{
+        setCheckQuantity({ isAvailable: false });
+      }
     
-    // // function addToCart(productInfo){
+    }
+    
+    function removeQ(product) {
+      if(localQuantity[product.id]>0){
+      setLocalQuantity((prevQuantity) => ({
+        ...prevQuantity,
+        [product.id]: Math.max(prevQuantity[product.id] - 1, 0), 
+      }));
+      setCheckQuantity({ isAvailable: true });
+    }else{
+      setCheckQuantity({ isAvailable: false });
+    }
+  }
+  function resetQ(product) {
+    
+    setLocalQuantity((prevQuantity) => ({
+      ...prevQuantity,
+      [product.id]: 0, 
+    }));
+    
+  
+}
 
-    // // }
-    // const[Item,setItem]=useState({
-    //     result:null,
-    //     status:"pending",
-    //     addstatus:"null",
-    //     showQuantity:true
-    // });
+
     if (Item.status!=="completed" && filter.status===false){
       
        fetch("http://localhost:8000/items")
@@ -365,18 +251,9 @@ const[Item,setItem]=useState({
     }
   
     
-    
-    // const [originalData,setOriginalData]=useState(Item)
    if(Item.status==="completed"){
    
-    // const sortedItems = Item.result.sort((a, b) => {
-    //   const nameA = a.name.toLowerCase();
-    //   const nameB = b.name.toLowerCase();
-    //   if (nameA < nameB) return -1;
-    //   if (nameA > nameB) return 1;
-    //   return 0;
-    // });
-    // const sortedItems=checkFilter(filter,Item)
+  
     return(
         
         <div className={isDarkMode ? "dark-theme" : "light-theme"}>
@@ -384,31 +261,23 @@ const[Item,setItem]=useState({
             <button id="toggleview"onClick={toggleTheme}>
               {isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
               </button>
-              
-               {/* {props.userLogged} */}
-              
-              
-            
+  
             <Form id="filter"> 
-            
-
             <Form.Group>
               <Form.Label>Filter by Name</Form.Label>
               <Form.Control type="text" name="filter" placeholder="type full name" 
                onChange={(e) => {
                 setFilter({ result: e.target.value });
-                findItem(e.target.value, setItem, setFilter); // Call findItem on select change
+                findItem(e.target.value, setItem, setFilter); 
                 
               }}
               ></Form.Control>
               <select name="filter" 
               onChange={(e) => {
                 setFilter({ result: e.target.value });
-                findItem(e.target.value, setItem, setFilter); // Call findItem on select change
+                findItem(e.target.value, setItem, setFilter); 
                 
               }}>
-                {/* {console.log(showFilters)} */}
-                {/* <select name="filter" onChange={(e) => setFilter({ result: e.target.value })}> */}
                   
                   <option value="">Select an option</option>
                   {showFilters && showFilters.map((filter,index)=>(
@@ -420,10 +289,6 @@ const[Item,setItem]=useState({
                 </select>
                       
               </Form.Group>
-             
-              
-              {/* <Button onClick={()=>findItem(filter,setItem,setFilter)}> Submit</Button> */}
-              
               </Form>
               
             <div className="products">
@@ -434,38 +299,30 @@ const[Item,setItem]=useState({
             <Button className="itemButton" onClick={()=>props.addItemToPage(product)} >
             <Card.Img src={product.img} className="itemImg"  />
             </Button>
-            
-            
-            
          
           <Card.Body>
             <Card.Title>{product.name}</Card.Title>
             <Card.Text>
                 Type: {product.type}<br></br>
                 Price:${product.price}<br></br>
-                {/* Description: {product.desc} */}
-             
             </Card.Text>
             
             
             {props.userAdmin===false ?<div>
-            <Button onClick={()=>removeQ(product,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >-</Button>{product.quantity}
-            <Button onClick={()=>addQ(product,setQuantity,Quantity.isUpdated,Quantity.isAvailable)} >+</Button>
+            <Button onClick={()=>removeQ(product)} >-</Button>{localQuantity[product.id]}
+            <Button onClick={()=>addQ(product)} >+</Button>
                 
             <Button variant="success" onClick={()=>{
-              props.addToCart(product,props.userLogged)
-              setItem({
-                showQuantity:!Item.showQuantity
-              })
-
+              console.log(localQuantity[product.id])
+              props.addToCart(product,props.userLogged,localQuantity[product.id])
+              resetQ(product)
               
               
-
             }} >Submit</Button>
             </div>: null }
            
 
-            {props.userAdmin===true ? <Button variant="danger" onClick={()=>removemShop(product,setItem,props.newToken,props.userAdmin)} >Remove</Button> : null }
+            {props.userAdmin === true ? <Button variant="danger" onClick={()=>removeShop(product,setItem,props.newToken)} >Remove</Button> : null }
             <br></br>
             {props.userAdmin===true ? <Button onClick={()=>subtractInventory(product,setInventory)}>-</Button> : null }
             {props.userAdmin===true ? product.inventory : null }
@@ -483,7 +340,7 @@ const[Item,setItem]=useState({
         
        {props.userAdmin===true ? <AddForm newItem={(data)=>{
         if(data.name===null || data.price===null || data.img===null ||  data.desc===null || data.inventory===null || data.type===null){
-          console.log("null fields exist")
+          
           setMessage({
             inputfield:false
           })
@@ -512,26 +369,17 @@ const[Item,setItem]=useState({
              }
             
         } ></AddForm>: null} 
-        {showMessage(Quantity.isAvailable)}
-        {showInputMessage(message.inputfield,setMessage)}
+        {showMessage(checkQuantity.isAvailable)}
+        {showInputMessage(message.inputfield)}
         </div>
        
         
         
         </div>
         
-
-  
-      
-      
-        
     );
 
    }
-    
-    
-    
-    
 
 }
 export default Shop;
