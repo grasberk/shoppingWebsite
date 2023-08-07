@@ -77,15 +77,13 @@ function checkout(cart,total,setTotal,setCart){
     })
         
     });
-    console.log("cart before remove")
-        console.log(cart)
+  
         
         fetch("http://localhost:8000/cart/delete", {
             method:"DELETE",
           }).then((res=>res.json()))
           .then((cart)=>{
-            console.log("cart after remove")
-            console.log(cart)
+           
             setCart({
                 cart:cart
             })
@@ -118,13 +116,7 @@ function remove(product,setUpdateCart,updateCart,setCart){
         })
       })
       
-    // cart=cart.filter(product=>product.id!==productId)
-    // console.log(cart)
-    // setCart({
-    //     result: cart
-    // })
-    
-    // console.log(cart)
+ 
     
     
 }
@@ -242,13 +234,13 @@ function Cart(props){
           }).then(res=>res.json())
           .then(
             (result)=>{
-            console.log(result.cart_id)
+            
             
             return result.cart_id
           }).then((cartid)=>{
             fetch(`http://localhost:8000/cart/${cartid}`).then(res=>res.json()).then(
                 (result)=>{
-                    console.log(result)
+                    
                         setCart({
                             result:result,
                             status:!cart.status

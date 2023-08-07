@@ -96,7 +96,7 @@ function navigateLogin(navigate,data,setReview){
     if(result[0]===false){
     
         if (data!=null&& data.quantity!==0){
-          console.log(itemQuantity)
+          
           setCartID(result[1])
           
      

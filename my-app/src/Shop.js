@@ -313,7 +313,7 @@ function Shop(props){
             <Button onClick={()=>addQ(product)} >+</Button>
                 
             <Button variant="success" onClick={()=>{
-              console.log(localQuantity[product.id])
+              
               props.addToCart(product,props.userLogged,localQuantity[product.id])
               resetQ(product)
               

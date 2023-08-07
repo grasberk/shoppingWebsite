@@ -13,7 +13,7 @@ function showReviews(userReview) {
 }
 
 function showMessage(message, userEmail) {
-  console.log(userEmail);
+  
   if (!userEmail) {
     return (
       <div>
@@ -68,7 +68,7 @@ function ItemPage(props) {
 
   function addReview(data, productDetails, userEmail, setMessage, userReview, setUserReview) {
     if (!userEmail) {
-      console.log('no username');
+      
       setMessage('Please Log In');
       props.goToLogin(data.message);
     } else {
@@ -76,13 +76,12 @@ function ItemPage(props) {
         .then((res) => res.json())
         .then((data) => {
           if (data) {
-            console.log('showing data');
-            console.log(data);
+           
             return data.email;
           }
         })
         .then((user) => {
-          console.log(user);
+      
           fetch('http://localhost:8000/addReview', {
             method: 'POST',
             headers: {
@@ -162,7 +161,7 @@ function ItemPage(props) {
         {showReviews(userReview)}
         {userReview.reviews.map((post) => (
           <Card key={post._id}>
-            {console.log(post.name)}
+           
             <h1>Name: {post.name}</h1>
             <h2>Post: {post.message}</h2>
           </Card>

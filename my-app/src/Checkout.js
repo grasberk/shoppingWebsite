@@ -7,9 +7,9 @@ function Checkout(props){
    const [cart,setCart]=useState({
       data:props.cartData
    })
-   console.log(props.cartData)
+   
    if(cart.data!=null){
-         console.log(cart.data)
+       
       return(
     
          <div>

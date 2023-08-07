@@ -41,7 +41,7 @@ function LoginForm(props){
     const [email, setEmail] = useState(null);
 	const [password, setPassword] = useState(null);
     const signupSubmit= (userEmail,userPassword,setTokenData,setUsername)=>{
-        console.log("start of sign up");
+        
         fetch("http://localhost:8000/signup", {
             method: "POST",
             headers:{
@@ -96,16 +96,13 @@ function LoginForm(props){
             return res.json()
         })
         .then(data => {
-            console.log("checking for user email and review")
-           
-            console.log(userEmail)
-            console.log(userReview)
+          
             sendEmail(data.email)
             sendisAdmin(data.isAdmin)
             
             const token = data.token; // Access the token property in the response
             if(userEmail!=null && itemData!=null){
-                console.log(itemData)
+                
                 props.addToCart(itemData,userEmail)
             }
             if (userEmail!=null && productDetails!=null){
