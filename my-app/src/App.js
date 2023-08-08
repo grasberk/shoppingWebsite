@@ -61,7 +61,8 @@ function navigateLogin(navigate,data,setReview){
 }
 
  function pushToCart(data,username,setMessage,navigate,setCartID,cartID,setItemData,itemQuantity){
-  
+  console.log(data)
+  console.log(itemQuantity)
  if (username===null || username===false ){
   
   setItemData(data)
@@ -312,7 +313,7 @@ const[userReview,setUserReview]=useState({
            <Route path="/itempage/:itemid" element={
                
                <ItemPage    
-               addToCart={(productData)=>pushToCart(productData,username,setMessage,navigate,setCartID,cartID,setItemData)}
+               addToCart={(productData,localQuantity)=>pushToCart(productData,username,setMessage,navigate,setCartID,cartID,setItemData,localQuantity)}
                productDetails={product}
                userEmail={username}
                goToLogin={(data)=>navigateLogin(navigate,data,setReview)}

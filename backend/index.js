@@ -166,47 +166,37 @@ app.get('/shop/genres', async (req,res)=>{
 
 //filter by price
 
-app.get('/items/:filter', async(req,res)=>{
-    const filter=req.params.filter
-    genres= await Item.distinct('type')
-    if(genres.includes(filter)){
-      
-      someItems= await Item.find({type:filter})
-      res.json(someItems)
-    }
-    else{
-      if (filter==="alphabetically"){
-        someItems=await Item.find({}).sort({name: 1})
-        res.json(someItems)
-      }
-     else if(filter=== 'priceLH'){
-    
-      someItems= await Item.find().sort({ price : 1 })
-      res.json(someItems)
-    
-    }
-    else if(filter=== 'priceHL'){
-    
-      someItems= await Item.find().sort({ price : -1 })
-      res.json(someItems)
-    
-    }
-    
-    else{
-    
-      someItems= await Item.find({ name : filter })
-          res.json(someItems)
-    
-    }
+app.get('/items/:filter', async (req, res) => {
+  const filter = req.params.filter;
+  genres = await Item.distinct('type');
 
-    }
-  
+  switch (true) {
+      case genres.includes(filter):
+          someItems = await Item.find({ type: filter });
+          res.json(someItems);
+          break;
 
-  
-  
- 
-})
+      case filter === 'alphabetically':
+          someItems = await Item.find({}).sort({ name: 1 });
+          res.json(someItems);
+          break;
 
+      case filter === 'priceLH':
+          someItems = await Item.find().sort({ price: 1 });
+          res.json(someItems);
+          break;
+
+      case filter === 'priceHL':
+          someItems = await Item.find().sort({ price: -1 });
+          res.json(someItems);
+          break;
+
+      default:
+          someItems = await Item.find({ name: filter });
+          res.json(someItems);
+          break;
+  }
+});
 
 //find items by type
 

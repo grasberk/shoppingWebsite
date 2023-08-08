@@ -13,7 +13,7 @@ function Home(props){
         <div>
               <h1>Home Page </h1>
        
-        <Button onClick={()=>props.sendMessage(message)}>send message from home component</Button> 
+        
         </div>
       
         

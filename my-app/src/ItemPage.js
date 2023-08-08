@@ -24,13 +24,12 @@ function showMessage(message, userEmail) {
 }
 
 function ItemPage(props) {
-  const [username, setUsername] = useState(null);
+  const [localQuantity,setLocalQuantity]=useState(0)
+  const [checkQuantity,setCheckQuantity]=useState({
+    isAvailable:true
+  })
   const [message, setMessage] = useState(null);
-  const [Quantity, setQuantity] = useState({
-    items: 0,
-    isUpdated: false,
-    isAvailable: true,
-  });
+  
   const params = useParams();
   const [userReview, setUserReview] = useState({
     reviews: null,
@@ -93,7 +92,7 @@ function ItemPage(props) {
               message: data.message,
             }),
           }).then(() => {
-            // After adding the review, fetch the updated reviews and set them in the state
+            
             fetchReviews(productDetails.id);
           });
         })
@@ -106,37 +105,41 @@ function ItemPage(props) {
     }
   }
 
-  function addQ(product, updateQuantity, increment) {
-    if (product.inventory !== 0 && product.quantity < product.inventory) {
-      product.quantity++;
-      updateQuantity({
-        isUpdated: !increment,
-      });
-    } else {
-      updateQuantity({
-        isAvailable: false,
-      });
-    }
-  }
+  function addQ(product) {
+    if (localQuantity < product.inventory) {
 
-  function removeQ(product, updateQuantity, increment) {
-    if (product.inventory !== 0 && product.quantity < product.inventory) {
-      if (product.quantity >= 1) {
-        product.quantity--;
-        updateQuantity({
-          isUpdated: !increment,
-        });
-      }
-    } else {
-      updateQuantity({
-        isAvailable: false,
-      });
+      setLocalQuantity((prevQuantity) => (
+         prevQuantity + 1));
+      setCheckQuantity({ isAvailable: true });
+    }else{
+      setCheckQuantity({ isAvailable: false });
     }
+  
   }
+  
+  function removeQ(product) {
+    if(localQuantity>0){
+    setLocalQuantity((prevQuantity) => (
+      prevQuantity - 1 
+    ));
+    setCheckQuantity({ isAvailable: true });
+  }else{
+    setCheckQuantity({ isAvailable: false });
+  }
+}
+function resetQ(product) {
+  
+  setLocalQuantity(0);
+  
+
+}
+
 
   if (product.product === null || userReview.reviews === null) {
+
     return <h1>Loading...</h1>;
   } else {
+    
     return (
       <div>
         {showMessage(message, props.userEmail)}
@@ -151,10 +154,13 @@ function ItemPage(props) {
               <br />
               Description: {product.product.desc}
             </Card.Text>
-            <Button onClick={() => removeQ(product.product, setQuantity, Quantity.isUpdated, Quantity.isAvailable)}>-</Button>
-            {product.product.quantity}
-            <Button onClick={() => addQ(product.product, setQuantity, Quantity.isUpdated, Quantity.isAvailable)}>+</Button>
-            <Button onClick={() => props.addToCart(product.product)}>Add To Cart</Button>
+            <Button onClick={() => removeQ(product.product)}>-</Button>
+            {localQuantity}
+            <Button onClick={() => addQ(product.product)}>+</Button>
+            <Button onClick={() =>{
+              props.addToCart(product.product,localQuantity)
+              resetQ(product.product)
+            } }>Add To Cart</Button>
           </Card.Body>
         </Card>
         <h1>User Reviews</h1>

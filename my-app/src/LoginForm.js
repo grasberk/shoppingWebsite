@@ -2,20 +2,8 @@ import React,{useState} from 'react';
 import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
-//tried putting loginsubmit in app.js and pass as props
-//tried using props and state
-//works with other props
-function showUsername(username){
-    
-    if (username.result!=null){
-        return(
-            <div>
-                <h1>user logged in as: {username.result}</h1>
-                
-            </div>
-        )
-    }
-}
+
+
 function LoginForm(props){
     const navigate=useNavigate();
     function sendToken(tokendata){
@@ -60,17 +48,15 @@ function LoginForm(props){
         })
         .then(data =>{
             
-            const token = data.token; // Access the token property in the response
-            const username=data.email
-            setUsername(username)
+            const token = data.token; 
+            const username = data.email;
+            setUsername(username);
             
-            console.log("returning token") 
+          
             return token;
             
         }).then((token)=>{
-            console.log("setting token state")
-           
-            //setTokenData(token)
+            
             return token;
           }).then((result)=>{
             sendToken(result)
@@ -80,8 +66,7 @@ function LoginForm(props){
         
     }
       function loginSubmit (userEmail,userPassword,setTokenData,setUsername,userReview,productDetails,itemData){
-        console.log("start login")
-        console.log(itemData)
+        
         return fetch("http://localhost:8000/login", {
             method: "POST",
             headers:{
@@ -100,7 +85,7 @@ function LoginForm(props){
             sendEmail(data.email)
             sendisAdmin(data.isAdmin)
             
-            const token = data.token; // Access the token property in the response
+            const token = data.token; 
             if(userEmail!=null && itemData!=null){
                 
                 props.addToCart(itemData,userEmail)
@@ -147,11 +132,11 @@ return(
 <div>
     
     {sendToken(tokendata)}
-    {/* {sendEmail(useremail)} */}
+   
     {props.userLogged}
     
 <Form>
-    {/* <Button onClick={sendInfo}>Send Data to Parent</Button> */}
+   
             <Form.Group>
                 <Form.Label>Email address</Form.Label><Form.Control
                 onChange={(e) =>{setEmail(e.target.value)}}
